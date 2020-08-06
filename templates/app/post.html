@@ -1,0 +1,44 @@
+
+
+
+
+<div class="jumbotron" style="padding: 10px">
+{# USER AND POST INFO SECTION #}
+    <div>
+        <a href="{% url 'profile' id=wp.profile.user.id %}" style="color: inherit;">
+            <img src="{{ wp.profile.profile_picture.url }}" style="width: 40px; height: 40px; object-fit: cover;
+                border-radius: 10%; float: left; margin-right: 6px" alt="Image not found">
+        </a>
+        <a href="{% url 'profile' id=wp.profile.user.id %}">
+            <p style="margin: 0;font-weight: bold">{{ wp.profile }}</p>
+        </a>
+        <p style="margin: 0; font-size: 12px">{{ wp.published }}</p>
+    </div>
+{# TEXT SECTION #}
+    <article class="text" style="font-size: 20px; margin: 4px;" >{{ wp.post.text }}</article>
+{# IMAGES SECTION #}
+    <div>
+        {% for image in wp.images %}
+            <img src="{{ image.image.url }}" alt="Image not found"
+                 style="object-fit: cover; border-radius: 1%; margin: 4px; max-width: 100%">
+        {% endfor %}
+    </div>
+{# BUTTONS AND LIKES SECTION#}
+    <div>
+        <button class="btn btn-secondary" type="button" data-toggle="collapse"
+                data-target="#CommentSection{{ wp.post.id }}" aria-expanded="false"
+                aria-controls="CommentSection{{ wp.post.id }}">Comments</button>
+    </div>
+
+{# COMMENT SECTION #}
+{#    <div class="collapse" id="CommentSection{{ wp.post.id }}">#}
+{#        <form method="POST">#}
+{#            {% csrf_token %}#}
+{##}
+{#        </form>#}
+{##}
+{##}
+{##}
+{##}
+{#    </div>#}
+</div>

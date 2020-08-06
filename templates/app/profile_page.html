@@ -1,0 +1,38 @@
+{% extends 'app/base_app.html' %}
+
+{% block wall_block %}
+
+    <div style="text-align: center">
+        <img src="{{ profile_user.profile_picture.url }}" style="height: 200px; width: 200px; object-fit: cover;
+        border-radius: 10%" alt="Image not Found">
+        <h2>{{ profile_user.user.first_name }} {{ profile_user.user.last_name }}</h2>
+        {# <a href="{% url 'profile' id=profile_user.user.id %}" class="btn btn-dark">send friend request</a>#}
+        {% if status != "auth" %}
+            <form method="POST" action="{% url 'profile' id=profile_user.user.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark">
+                    {% if status == 'friend' %}
+                        unfriend
+                    {% elif status == "sended_request" %}
+                        cancel friend request
+                    {% elif status == "received_request" %}
+                        accept friend request
+                    {% elif status == 'unknown' %}
+                        send friend request
+                    {% endif %}
+                </button>
+            </form>
+        {% endif %}
+        <br>
+        <br>
+    </div>
+
+    {% for wp in profile_posts %}
+        {% include 'app/post.html' %}
+    {% endfor %}
+
+
+
+
+
+{% endblock %}

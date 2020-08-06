@@ -1,0 +1,29 @@
+{% extends 'app/base_app.html' %}
+{% block wall_block %}
+
+
+<h1>friend requests</h1>
+
+{% for fr in friend_requests %}
+    <div class="jumbotron">
+        <img src="{{ fr.sender.profile_picture.url }}" style="width: 80px; height: 80px; object-fit: cover;
+                border-radius: 10%; float: left;" alt="Image not found">
+        <h3 style="float:left;">{{ fr.sender }}</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="sender" value="{{ fr.sender.user.id }}">
+            <button type="submit" class="btn btn-success">accept</button>
+        </form>
+
+
+
+    </div>
+
+
+
+{% endfor %}
+
+
+
+
+{% endblock %}

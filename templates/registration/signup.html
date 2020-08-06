@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Social Network</h1>
+        <h2>Registration</h2>
+
+        <div class="jumbotron" style="width: 500px; background:#efa065;">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class='btn btn-outline-info' type="submit" value="register">
+            </form>
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+</body>
+</html>

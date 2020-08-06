@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Social Network</h1>
+    <div class="container">
+        <div class="jumbotron col-8">
+            <h3>Log In</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="jumbotron">
+            <h4>Do not have an account?</h4>
+            <a class="btn btn-success" href="{%  url 'signup' %}">Register for free</a>
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

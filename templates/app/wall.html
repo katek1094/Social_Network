@@ -1,0 +1,22 @@
+{% extends 'app/base_app.html' %}
+{% load crispy_forms_filters %}
+
+{% block wall_block %}
+
+    <div class="jumbotron" style="padding: 10px">
+        <h4>add new post</h4>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input class="btn btn-dark" type="submit" value="post">
+        </form>
+    </div>
+
+    {% for wp in wall_posts %}
+        {% include 'app/post.html' %}
+    {% endfor %}
+
+
+
+
+{% endblock %}

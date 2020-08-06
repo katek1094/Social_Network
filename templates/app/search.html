@@ -1,0 +1,24 @@
+{% extends 'app/base_app.html' %}
+{% block wall_block %}
+
+
+<h1>search results for "{{ phrase }}"</h1>
+
+{% for profile in results_profiles %}
+    <div class="jumbotron">
+        <a href="{% url 'profile' id=profile.user.id %}">
+            <img src="{{ profile.profile_picture.url }}" style="width: 40px; height: 40px; object-fit: cover;
+                border-radius: 10%; float: left;" alt="Image not found">
+            <h4>{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+        </a>
+    </div>
+
+
+
+
+
+{% endfor %}
+
+
+
+{% endblock %}
