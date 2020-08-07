@@ -63,8 +63,15 @@ class Post(models.Model):
         return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
                f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
 
-    def comments_tree(self):
-        comments = self.postcomment_set.all()
+    def like(self, user):
+        Like.objects.create(target_post=self, user_profile=user)
+
+    def unlike(self, user):
+        Like.objects.filter(target_post=self, user_profile=user).delete()
+
+    @property
+    def likes(self):
+        return len(Like.objects.filter(target_post=self))
 
 
 def image_directory_path(instance, filename):
@@ -72,20 +79,51 @@ def image_directory_path(instance, filename):
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to=image_directory_path, blank=True)
+    image = models.ImageField(upload_to=image_directory_path)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.id}'
 
 
-class PostComment(models.Model):
+# trzeba poprawić żeby był jeden model do postów i do zdjęć
+# class Comment(models.Model):
+#     published = models.DateTimeField(auto_now_add=True)
+#     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+#     reply_to = models.ManyToManyField('self', related_name='reply', blank=True)
+#     text = models.TextField()
+#     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
+#                f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
+
+
+class Like(models.Model):
     published = models.DateTimeField(auto_now_add=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    reply_to = models.ManyToManyField('self', related_name='reply', blank=True)
-    text = models.TextField()
+    target_image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
+    target_post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    # target_Comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
+    @property
+    def target(self):
+        if self.target_image is not None:
+            return self.target_image
+        # if self.target_Comment is not None:
+        #     return self.target_Comment
+        if self.target_post is not None:
+            return self.target_post
+
     def __str__(self):
-        return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
-               f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
+        return f'{self.user_profile} ---> {self.target}'
+
+
+class PreGalleryUrl(models.Model):
+    url = models.URLField()
+    scrollY = models.IntegerField(default=0)
+    # TODO: use scrollY to scroll to the correct place in the page
+    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, primary_key=True)
+
+
+

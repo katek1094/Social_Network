@@ -3,42 +3,56 @@
 
 
 <div class="jumbotron" style="padding: 10px">
-{# USER AND POST INFO SECTION #}
+    {# USER AND POST INFO SECTION #}
     <div>
-        <a href="{% url 'profile' id=wp.profile.user.id %}" style="color: inherit;">
-            <img src="{{ wp.profile.profile_picture.url }}" style="width: 40px; height: 40px; object-fit: cover;
+        <a href="{% url 'profile' id=post_data.profile.user.id %}" style="color: inherit;">
+            <img src="{{ post_data.profile.profile_picture.url }}" style="width: 40px; height: 40px; object-fit: cover;
                 border-radius: 10%; float: left; margin-right: 6px" alt="Image not found">
         </a>
-        <a href="{% url 'profile' id=wp.profile.user.id %}">
-            <p style="margin: 0;font-weight: bold">{{ wp.profile }}</p>
+        <a href="{% url 'profile' id=post_data.profile.user.id %}">
+            <p style="margin: 0;font-weight: bold">{{ post_data.profile }}</p>
         </a>
-        <p style="margin: 0; font-size: 12px">{{ wp.published }}</p>
+        <p style="margin: 0; font-size: 12px">{{ post_data.published }}</p>
     </div>
-{# TEXT SECTION #}
-    <article class="text" style="font-size: 20px; margin: 4px;" >{{ wp.post.text }}</article>
-{# IMAGES SECTION #}
+    {# TEXT SECTION #}
+    <article class="text" style="font-size: 20px; margin: 4px;" >{{ post_data.post.text }}</article>
+    {# IMAGES SECTION #}
     <div>
-        {% for image in wp.images %}
-            <img src="{{ image.image.url }}" alt="Image not found"
-                 style="object-fit: cover; border-radius: 1%; margin: 4px; max-width: 100%">
+        {% for image in post_data.images %}
+            <a class="gallery-link" onclick="gallery_link({{ auth_profile_user.user.id }})"
+               href="{% url 'gallery' post_id=post_data.post.id image_id=image.id %}">
+                <img src="{{ image.image.url }}" alt="Image not found"
+                     style="object-fit: cover; border-radius: 1%; margin: 4px; max-width: 100%">
+            </a>
         {% endfor %}
     </div>
-{# BUTTONS AND LIKES SECTION#}
+    {# BUTTONS AND LIKES SECTION#}
+
     <div>
-        <button class="btn btn-secondary" type="button" data-toggle="collapse"
-                data-target="#CommentSection{{ wp.post.id }}" aria-expanded="false"
-                aria-controls="CommentSection{{ wp.post.id }}">Comments</button>
+        <div id="like-button-{{ post_data.post.id }}">
+            {% if post_data.like %}
+                <button class='btn btn-primary' id="unlike-{{ post_data.post.id }}"
+                        onclick="unlikeButton({{ post_data.post.id }})">unlike</button>
+            {% else %}
+                <button class='btn btn-secondary' id="like-{{ post_data.post.id }}"
+                        onclick="likeButton({{ post_data.post.id }})">like</button>
+            {% endif %}
+        </div>
+
+
+
+
+
+
+        {#        <button class="btn btn-secondary" type="button" data-toggle="collapse"#}
+        {#                data-target="#CommentSection{{ post_data.post.id }}" aria-expanded="false"#}
+        {#                aria-controls="CommentSection{{ post_data.post.id }}">Comments</button>#}
     </div>
 
-{# COMMENT SECTION #}
-{#    <div class="collapse" id="CommentSection{{ wp.post.id }}">#}
-{#        <form method="POST">#}
-{#            {% csrf_token %}#}
-{##}
-{#        </form>#}
-{##}
-{##}
-{##}
-{##}
-{#    </div>#}
+    {# COMMENT SECTION#}
+    {#    <div class="collapse" id="CommentSection{{ post_data.post.id }}">#}
+    {#        <form method="POST">#}
+    {#            {% csrf_token %}#}
+    {#        </form>#}
+    {#    </div>#}
 </div>

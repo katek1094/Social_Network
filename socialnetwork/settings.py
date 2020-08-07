@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'homepage',
     'app',
     'django_cleanup',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

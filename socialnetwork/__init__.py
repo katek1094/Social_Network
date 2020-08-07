@@ -1,4 +1,4 @@
-# TODO: image and gallery browser (in new view an url like real fb)
+# TODO: image and gallery browser (in new view and url like real fb)
 # TODO: tagging people in images and posts
 # TODO: common friends shown in profile
 # TODO: settings, setting profile picture and personal info outside admin

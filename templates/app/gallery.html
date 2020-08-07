@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>social network</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+            function gallery_exit(auth_user_id) {
+                $.ajax({
+                    url: "{% url 'pre_gallery_url' %}",
+                    type: 'GET',
+                    data: {
+                        auth_user_id: auth_user_id,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.href = response.url
+                        {#window.scrollTo(0, response.scrollY)#}
+                        {#tutaj mozna kiedys dodac opcje wracanie w to samo miejsce na stronie#}
+                    }
+                });
+            }
+        </script>
+
+</head>
+<body>
+<div class="row" style="height: 100vh; background: black; width: 100%">
+    <div class="col-9" style="text-align: center; vertical-align: middle">
+        <img src="{{ image.image.url }}" alt='image not found' style="max-height: 100vh; max-width: 100vh;
+            object-fit: contain; position: relative; top: 50%; transform: translateY(-50%);">
+        <button onclick='gallery_exit({{ auth_profile_user.user.id }})' style="position: absolute; bottom: 90%; left: 50px">Back</button>
+        {% if left_image %}
+            <a class="btn btn-secondary" href="{% url 'gallery' post_id=post.id image_id=left_image.id %}"
+               style="position: absolute; bottom: 50%; left: 50px; font-weight: bold">Left</a>
+        {% endif %}
+        {% if right_image %}
+            <a class="btn btn-secondary" href="{% url 'gallery' post_id=post.id image_id=right_image.id %}"
+               style="position: absolute; bottom: 50%; right: 50px; font-weight: bold">Right</a>
+        {% endif %}
+    </div>
+    {#image info and comments#}
+    <div class="col-3" style="height: 100%">
+        <div class="jumbotron" style="height: 95vh; padding: 14px; margin: 10px">
+            <div>
+                <a href="{% url 'profile' id=author.user.id %}" style="color: inherit;">
+                    <img src="{{ author.profile_picture.url }}" style="width: 40px; height: 40px; object-fit: cover;
+                border-radius: 10%; float: left; margin-right: 6px" alt="Image not found">
+                </a>
+                <a href="{% url 'profile' id=author.user.id %}">
+                    <p style="margin: 0;font-weight: bold">{{ author }}</p>
+                </a>
+                <p style="margin: 0; font-size: 12px">{{ post.published }}</p>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+

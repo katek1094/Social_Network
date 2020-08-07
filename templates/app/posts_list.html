@@ -1,0 +1,81 @@
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    function gallery_link(auth_user_id) {
+        current_url = window.location.href
+        scrollY = parseInt(window.scrollY)
+        $.ajax({
+            url: "{% url 'pre_gallery_url' %}",
+            type: 'POST',
+            data: {
+                auth_user_id: auth_user_id,
+                previous_url: current_url,
+                scrollY: scrollY,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            dataType: 'json',
+            success: function () {
+            }
+        });
+    }
+
+
+
+
+    function likeButton(post_id) {
+        $.ajax({
+            url: "{% url 'like' %}",
+            type: 'POST',
+            data: {post_id: post_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'like'},
+            dataType: 'json',
+            success: function () {
+                like_button_section = document.getElementById(`like-button-${post_id}`)
+                like_button_section.innerHTML = `<button class='btn btn-primary' id='unlike-${post_id}'` +
+                    ` >unlike</button>`
+                document.getElementById(`unlike-${post_id}`).addEventListener('click', function (e) {
+                    unlikeButton(post_id)
+                })
+            }
+        });
+    }
+    function unlikeButton(post_id) {
+        $.ajax({
+            url: "{% url 'like' %}",
+            type: 'POST',
+            data: {post_id: post_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'unlike'},
+            dataType: 'json',
+            success: function () {
+                like_button_section = document.getElementById(`like-button-${post_id}`)
+                like_button_section.innerHTML = `<button class='btn btn-secondary' id='like-${post_id}'` +
+                    ` >like</button>`
+                document.getElementById(`like-${post_id}`).addEventListener('click', function (e) {
+                    likeButton(post_id)
+                })
+            }
+        });
+    }
+
+</script>
+
+
+{% for post_data in posts %}
+    {% include 'app/post.html' %}
+{% endfor %}
+
+
+
+
+
+
+
+
+

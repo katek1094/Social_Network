@@ -1,5 +1,5 @@
 {% extends 'app/base_app.html' %}
-{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 {% block wall_block %}
 
@@ -12,9 +12,7 @@
         </form>
     </div>
 
-    {% for wp in wall_posts %}
-        {% include 'app/post.html' %}
-    {% endfor %}
+    {% include 'app/posts_list.html' with posts=wall_posts %}
 
 
 

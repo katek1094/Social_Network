@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Post, Image, Friendship, FriendRequest, PostComment
+from .models import UserProfile, Post, Image, Friendship, FriendRequest, Like, PreGalleryUrl
 
 # Register your models here.
 
@@ -18,4 +18,5 @@ admin.site.register(Post)
 admin.site.register(Image)
 admin.site.register(FriendRequest)
 admin.site.register(Friendship)
-admin.site.register(PostComment)
+admin.site.register(Like)
+admin.site.register(PreGalleryUrl)
