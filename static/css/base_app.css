@@ -1,0 +1,22 @@
+
+body {
+    background: #8b8686;
+}
+#navbar {
+    line-height: 40px;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+#nav_profile_anchor {
+    text-align: center;
+}
+#nav_profile_img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10%;
+}
+
+
+
+

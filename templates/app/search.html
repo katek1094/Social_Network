@@ -8,9 +8,10 @@
     <div class="jumbotron">
         <a href="{% url 'profile' id=profile.user.id %}">
             <img src="{{ profile.profile_picture.url }}" style="width: 40px; height: 40px; object-fit: cover;
-                border-radius: 10%; float: left;" alt="Image not found">
+                border-radius: 10%; float: left; margin-right: 10px;" alt="Image not found">
             <h4>{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
         </a>
+    
     </div>
 
 

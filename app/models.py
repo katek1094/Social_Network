@@ -31,6 +31,19 @@ class UserProfile(models.Model):
     def get_friends(self):
         return self.friends.filter(to_user__from_user=self)
 
+    def friend_status_with(self, user_profile):
+        status = 'unknown'
+        if Friendship.objects.filter(from_user=self, to_user=user_profile):
+            status = 'friend'
+        if FriendRequest.objects.filter(sender=self, receiver=user_profile):
+            status = 'sended request'
+        if FriendRequest.objects.filter(sender=user_profile, receiver=self):
+            status = 'received request'
+        if user_profile == self:
+            status = "self"
+
+        return status
+
 
 # https://charlesleifer.com/blog/self-referencing-many-many-through/
 class Friendship(models.Model):
@@ -60,14 +73,20 @@ class Post(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
+        return f'{self.published.day}-{self.published.month}-{self.published.year}  ' \
                f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
 
     def like(self, user):
-        Like.objects.create(target_post=self, user_profile=user)
+        if len(self.image_set.all()) == 1:
+            Like.objects.create(target_image=self.image_set.all()[0], user_profile=user, target_post=self)
+        else:
+            Like.objects.create(target_post=self, user_profile=user)
 
     def unlike(self, user):
-        Like.objects.filter(target_post=self, user_profile=user).delete()
+        if len(self.image_set.all()) == 1:
+            Like.objects.get(target_image=self.image_set.all()[0], user_profile=user, target_post=self).delete()
+        else:
+            Like.objects.get(target_post=self, user_profile=user).delete()
 
     @property
     def likes(self):
@@ -85,33 +104,49 @@ class Image(models.Model):
     def __str__(self):
         return f'{self.id}'
 
+    def like(self, user):
+        if len(self.post.image_set.all()) == 1:
+            Like.objects.create(target_image=self, user_profile=user, target_post=self.post)
+        else:
+            Like.objects.create(target_image=self, user_profile=user)
 
-# trzeba poprawić żeby był jeden model do postów i do zdjęć
-# class Comment(models.Model):
-#     published = models.DateTimeField(auto_now_add=True)
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-#     reply_to = models.ManyToManyField('self', related_name='reply', blank=True)
-#     text = models.TextField()
-#     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
-#                f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
+    def unlike(self, user):
+        if len(self.post.image_set.all()) == 1:
+            Like.objects.get(target_image=self, user_profile=user, target_post=self.post).delete()
+        else:
+            Like.objects.get(target_image=self, user_profile=user).delete()
+
+    @property
+    def likes(self):
+        return len(Like.objects.filter(target_image=self))
+
+
+class Comment(models.Model):
+    published = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
+    reply_to = models.ManyToManyField('self', related_name='reply', blank=True)
+    text = models.TextField()
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
+               f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
 
 
 class Like(models.Model):
     published = models.DateTimeField(auto_now_add=True)
     target_image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
     target_post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
-    # target_Comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
+    target_Comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     @property
     def target(self):
         if self.target_image is not None:
             return self.target_image
-        # if self.target_Comment is not None:
-        #     return self.target_Comment
+        if self.target_Comment is not None:
+            return self.target_Comment
         if self.target_post is not None:
             return self.target_post
 
@@ -122,7 +157,6 @@ class Like(models.Model):
 class PreGalleryUrl(models.Model):
     url = models.URLField()
     scrollY = models.IntegerField(default=0)
-    # TODO: use scrollY to scroll to the correct place in the page
     user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, primary_key=True)
 
 

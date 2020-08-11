@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'app',
     'django_cleanup',
     'crispy_forms',
+    'messenger',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,6 @@ LOGOUT_REDIRECT_URL = 'welcome_page'
 
 
 TEMPLATES[0]["OPTIONS"]['context_processors'].append('app.context_processors.auth_profile_user')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
