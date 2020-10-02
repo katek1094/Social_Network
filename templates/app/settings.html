@@ -1,11 +1,22 @@
 {% extends 'app/base_app.html' %}
+{% load crispy_forms_filters %}
 
 {% block wall_block %}
 
 
+<h3>Change profile picture</h3>
 
-
-
+<form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-9">
+                    {{ form|crispy }}
+                </div>
+                <div class="col-3">
+                    <input class="btn btn-dark" type="submit" value="submit">
+                </div>
+            </div>
+        </form>
 
 
 

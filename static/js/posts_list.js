@@ -62,7 +62,7 @@ function commentPostButton(post_id) {
         dataType: 'json',
         success: function () {
             comment_field.value = ''
-
+            // TODO: display new comment if success
         }
     });
     }

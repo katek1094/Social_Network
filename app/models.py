@@ -2,13 +2,13 @@ from django.db import models
 from homepage.models import MyUser
 
 
-def user_directory_path(instance, filename):
-    return f"users/{instance.user.id}/profile_images/{filename}"
+def profile_image_directory_path(instance, filename):
+    return f"images/{instance.user.id}/profile_image/{filename}"
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
-    profile_picture = models.ImageField(upload_to=user_directory_path, default="default_profile_pic.jpg")
+    profile_picture = models.ImageField(upload_to=profile_image_directory_path, default="default_profile_pic.jpg")
     city = models.CharField(max_length=40, blank=True)
     country = models.CharField(max_length=30, blank=True)
     nickname = models.CharField(max_length=24, blank=True)
@@ -94,12 +94,16 @@ class Post(models.Model):
 
 
 def image_directory_path(instance, filename):
-    return f"images/{instance.post.user_profile.user.id}/{filename}"
+    if instance.post:
+        return f"images/{instance.post.user_profile.user.id}/{filename}"
+    else:
+        return f"images/{instance.profile.user.id}/profile_images/{filename}"
 
 
 class Image(models.Model):
     image = models.ImageField(upload_to=image_directory_path)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.id}'
@@ -125,28 +129,28 @@ class Comment(models.Model):
     published = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
-    reply_to = models.ManyToManyField('self', related_name='reply', blank=True)
+    reply_to = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     text = models.TextField()
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.published.day}-{self.published.month}-{self.published.day}  ' \
-               f'{self.published.hour}:{self.published.minute} by {self.user_profile}'
+               f'{self.published.hour}:{self.published.minute} by {self.author}'
 
 
 class Like(models.Model):
     published = models.DateTimeField(auto_now_add=True)
     target_image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
     target_post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
-    target_Comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
+    target_comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     @property
     def target(self):
         if self.target_image is not None:
             return self.target_image
-        if self.target_Comment is not None:
-            return self.target_Comment
+        if self.target_comment is not None:
+            return self.target_comment
         if self.target_post is not None:
             return self.target_post
 

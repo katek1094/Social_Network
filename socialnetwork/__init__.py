@@ -6,6 +6,7 @@
 # TODO: editing posts
 
 # TODO: comments under posts and under images
+# TODO: profile images as normal images, and changing/adding new profile image
 
 
 # robie przerwe na nauke javascript, zacząłem robić komentarze ale do tego potrzebuje jednak nauczyc sie front endu

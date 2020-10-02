@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'app',
     'django_cleanup',
     'crispy_forms',
-    'messenger',
 ]
 
 MIDDLEWARE = [

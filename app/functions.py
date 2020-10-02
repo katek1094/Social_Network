@@ -1,16 +1,17 @@
 from text_unidecode import unidecode
+import shutil, os
 
 
-
-# this function takes people as an argument (in forat showed below) and a search phrase that was in the serach form field
+# this function takes people as an argument (in format showed below) and a search phrase
+# that was in the search form field
 def search_for_users(people, search):
 
     results = []
 
-    # # pobieramy dane od użytkownika
+    # pobieramy dane od użytkownika
     # search = input("im looking for:")
     #
-    # # pobieramy dane z bazy danych
+    # pobieramy dane z bazy danych
     # people = [
     #     {"id": 1, "first_name": "Mikołaj", "last_name": "Staniul"},
     #     {"id": 2, "first_name": "Adam", "last_name": "Głogowski"},
@@ -72,5 +73,20 @@ def search_for_users(people, search):
     return results
 
 
-
-
+def change_profile_picture(new_profile_pic, auth_user_profile):
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    src = f'{base_dir}{new_profile_pic.image.url}'
+    dst = f'{base_dir}/media/images/{auth_user_profile.user.id}/profile_image/'
+    fresh = shutil.copy(src, dst)
+    fresh = os.path.relpath(fresh)
+    fresh = fresh[6:]  # ponieważ zmiana arybutu poprzez save sama dodaje /media/ na poczatku, a nie chce 2
+    auth_user_profile.profile_picture = fresh
+    auth_user_profile.save()
+    
+    # ciezko powiedziec co sie tu dzieje: chcę aby stare zdjęcia profilowe nadal zapisywały się w folderze
+    # profile_images, do któ©ego zapisują się wszystko image z modelu Image, do tego za keżdym razem gdy
+    # zmieniane jest profilowe, jest ono zpisywane w folderze profile_image, na potrzeby atrybutu
+    # profile_picture modelu UserProfile, w tym folderze zawsze znajduje sie tylko jedno zdjęcie,
+    # wszystko związane z tymi path'ami to przez to że zanim zmienie zdjęcię an nowe a atrybucie
+    # profile_picture, chce utworzyć nowy instance of Image model, a dopiero potem zmienic wartość
+    # atrybutu profile_picture, ponieważ w innym wypadku usunąłby on mi zdjęcie przez django_cleanup

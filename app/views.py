@@ -11,8 +11,8 @@ def comment_tree(post):
         tree.append((comment, replies))
         # tree - lista składająca się z tuples
         # tuple[0] - first tier comment, tuple[1] - all replies to it
-    if tree:
-        print(tree[0][0].text)
+    # if tree:
+    #     print(tree[0][0].text)
     return tree
 
 
@@ -31,6 +31,8 @@ def post_list_context(posts, auth_user_profile):
                 'comment_tree': comment_tree(p)}
         posts_with_context.append(data)
     return posts_with_context
+
+# Views
 
 
 def welcome_page(request):
@@ -62,8 +64,22 @@ def profile_page(request, id):
 
 
 def settings(request):
+    auth_user_profile = UserProfile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = NewProfilePictureUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = request.FILES.get('image')
+            if not image:
+                pass
+            else:
+                new_profile_pic = Image.objects.create(profile=auth_user_profile, image=image)
+                change_profile_picture(new_profile_pic, auth_user_profile)
 
-    return render(request, 'app/settings.html')
+                return redirect('settings')
+    else:
+        form = NewProfilePictureUploadForm()
+
+    return render(request, 'app/settings.html', {'form': form})
 
 
 def wall(request):

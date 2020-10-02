@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from homepage.models import MyUser
 from . models import UserProfile, Post, Image, FriendRequest, Friendship, Like, PreGalleryUrl, Comment
-from .forms import BestForm
-from .functions import search_for_users
+from .forms import BestForm, NewProfilePictureUploadForm
+from .functions import search_for_users, change_profile_picture
 from urllib import parse
 
 
@@ -81,7 +81,6 @@ def comment(request):
     text = request.POST.get('text')
     if text != '':
         Comment.objects.create(post=post, text=text, author=auth_user_profile)
-
 
     return JsonResponse({'success': True})
 

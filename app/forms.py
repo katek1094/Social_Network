@@ -8,6 +8,8 @@ class BestForm(forms.Form):
     image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), label='', required=False)
 
 
+class NewProfilePictureUploadForm(forms.Form):
+    image = forms.ImageField(widget=forms.ClearableFileInput(), label='')
 
 
 
