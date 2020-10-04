@@ -36,33 +36,3 @@ function gallery_exit(auth_user_id) {
         }
     });
 }
-
-function likeImageButton(image_id, action) {
-    $.ajax({
-        url: like_url,
-        type: 'POST',
-        data: {target_id: image_id,
-            csrfmiddlewaretoken: csrf_token,
-            action: action,
-            target_type: 'image'},
-        dataType: 'json',
-        success: function () {
-            if (action === 'like') {
-                let like_button_section = document.getElementById(`like-button-${image_id}`)
-                like_button_section.innerHTML = `<button class='btn btn-primary' id='unlike-${image_id}'` +
-                    ` >unlike</button>`
-                document.getElementById(`unlike-${image_id}`).addEventListener('click', function () {
-                    likeImageButton(image_id, 'unlike')
-                })
-            }
-            if (action === 'unlike') {
-                let like_button_section = document.getElementById(`like-button-${image_id}`)
-                like_button_section.innerHTML = `<button class='btn btn-secondary' id='like-${image_id}'` +
-                    ` >like</button>`
-                document.getElementById(`like-${image_id}`).addEventListener('click', function () {
-                    likeImageButton(image_id, 'like')
-                })
-            }
-        }
-    });
-}

@@ -1,5 +1,5 @@
 
-body {
+body{
     background: #8b8686;
 }
 #navbar {
@@ -9,6 +9,7 @@ body {
 }
 #nav_profile_anchor {
     text-align: center;
+    /*to jest chyba useless*/
 }
 #nav_profile_img {
     width: 40px;
@@ -16,7 +17,12 @@ body {
     object-fit: cover;
     border-radius: 10%;
 }
-
-
+#wall_block_container {
+    padding: 0;
+}
+#wall_block {
+    background: #cbc8c8;
+    padding: 30px;
+}
 
 

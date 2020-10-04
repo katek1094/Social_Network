@@ -9,12 +9,16 @@
             window.scrollTo(0, {{ scrollY }})
         });
         let friendship_button_url = '{% url 'friendship_button' %}'
-        let csrf_token = '{{ csrf_token }}'
     </script>
     <script src="{% static 'js/profile_page.js' %}"></script>
 
     <div id="main_block">
-        <img id="profile_img" src="{{ visited_user.profile_picture.url }}" alt="Image not Found">
+        <a class="gallery-link" onclick="gallery_link({{ auth_profile_user.user.id }})"
+           href="{% url 'gallery' image_id=profile_image_id %}">
+            <img id="profile_img" src="{{ visited_user.profile_picture.url }}" alt="Image not Found">
+            {#                <img id="post_img" src="{{ image.image.url }}" alt="Image not found">#}
+        </a>
+
         <h2>{{ visited_user.user.first_name }} {{ visited_user.user.last_name }}</h2>
         {% if status != "self" %}
             <button id="friendship-button" class="btn btn-dark"
@@ -23,20 +27,20 @@
 
 
 
-{#            <form method="POST" action="{% url 'profile' id=profile_user.user.id %}">#}
-{#                {% csrf_token %}#}
-{#                <button type="submit" class="btn btn-dark">#}
-{#                    {% if status == 'friend' %}#}
-{#                        unfriend#}
-{#                    {% elif status == "sended_request" %}#}
-{#                        cancel friend request#}
-{#                    {% elif status == "received_request" %}#}
-{#                        accept friend request#}
-{#                    {% elif status == 'unknown' %}#}
-{#                        send friend request#}
-{#                    {% endif %}#}
-{#                </button>#}
-{#            </form>#}
+            {#            <form method="POST" action="{% url 'profile' id=profile_user.user.id %}">#}
+            {#                {% csrf_token %}#}
+            {#                <button type="submit" class="btn btn-dark">#}
+            {#                    {% if status == 'friend' %}#}
+            {#                        unfriend#}
+            {#                    {% elif status == "sended_request" %}#}
+            {#                        cancel friend request#}
+            {#                    {% elif status == "received_request" %}#}
+            {#                        accept friend request#}
+            {#                    {% elif status == 'unknown' %}#}
+            {#                        send friend request#}
+            {#                    {% endif %}#}
+            {#                </button>#}
+            {#            </form>#}
         {% endif %}
         <br>
         <br>

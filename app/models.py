@@ -104,6 +104,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to=image_directory_path)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+    published = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.id}'
@@ -129,7 +130,6 @@ class Comment(models.Model):
     published = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
-    reply_to = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     text = models.TextField()
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 

@@ -1,19 +1,7 @@
 from app.ajax_views import *
 
 
-# Function
-def comment_tree(post):
-    tree = []
-    all_comments = Comment.objects.filter(post=post)
-    first_tier = all_comments.filter(reply_to=None)
-    for comment in first_tier:
-        replies = list(all_comments.filter(reply_to=comment))
-        tree.append((comment, replies))
-        # tree - lista składająca się z tuples
-        # tuple[0] - first tier comment, tuple[1] - all replies to it
-    # if tree:
-    #     print(tree[0][0].text)
-    return tree
+# Functions
 
 
 def post_list_context(posts, auth_user_profile):
@@ -27,8 +15,8 @@ def post_list_context(posts, auth_user_profile):
                 'published': published,
                 'like': Like.objects.filter(target_post=p, user_profile=auth_user_profile),
                 'likes': p.likes,
-                'image_quantity': len(Image.objects.filter(post=p)),
-                'comment_tree': comment_tree(p)}
+                # 'image_quantity': len(Image.objects.filter(post=p)),
+                'comments': Comment.objects.filter(post=p)}
         posts_with_context.append(data)
     return posts_with_context
 
@@ -57,10 +45,12 @@ def profile_page(request, id):
     button_action = friendship_status_actions[status]
     user_posts = visited_profile.post_set.all().order_by('-published')
     profile_posts_context = post_list_context(user_posts, auth_user_profile)
+    profile_image_id = Image.objects.filter(profile=visited_profile).order_by('-published')[0].id
 
     return render(request, 'app/profile_page.html',
                   context={'visited_user': visited_profile, 'profile_posts': profile_posts_context,
-                           'status': status, 'scrollY': scrollY, 'button_action': button_action})
+                           'status': status, 'scrollY': scrollY, 'button_action': button_action,
+                           'profile_image_id': profile_image_id})
 
 
 def settings(request):
@@ -146,16 +136,26 @@ def friend_requests(request):
     return render(request, 'app/friend_requests.html', {'friend_requests': friend_requests})
 
 
-def gallery(request, post_id, image_id):
-    auth_user_profile = UserProfile.objects.get(user=request.user)
-    post = Post.objects.get(id=post_id)
+def gallery(request, image_id):
+    # gallery types: post, profile photos
     image = Image.objects.get(id=image_id)
-    images = Image.objects.filter(post=post)
+    if image.post:
+        post_id = Post.objects.get(image=image_id).id
+        post = Post.objects.get(id=post_id)
+        images = Image.objects.filter(post=post)
+        author = post.user_profile
+    elif image.profile:
+        author = image.profile
+        images = Image.objects.filter(profile=author)
+    else:
+        print('ERROR IN A GALLERY VIEW, SOMETHING WRONG WITH IMAGE INSTANCE ATTRIBUTES')
+
+    auth_user_profile = UserProfile.objects.get(user=request.user)
     image_list = list(images.values_list('id', flat=True))
-    author = post.user_profile
     current_image = image_list.index(image_id)
     like = Like.objects.filter(target_image=image_id, user_profile=auth_user_profile)
-    likes = Like.objects.filter(target_image=image_id)
+    likes = len(Like.objects.filter(target_image=image_id))
+    comments = Comment.objects.filter(image=image)
 
     if current_image != 0:
         left_image_id = image_list[current_image - 1]
@@ -168,6 +168,6 @@ def gallery(request, post_id, image_id):
     else:
         right_image = None
 
-    return render(request, 'app/gallery.html', {'post': post, 'author': author, 'image': image,
+    return render(request, 'app/gallery.html', {'author': author, 'image': image,
                                                 'right_image': right_image, 'left_image': left_image,
-                                                'like': like, 'likes': likes})
+                                                'like': like, 'likes': likes, 'comments': comments})

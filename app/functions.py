@@ -77,6 +77,8 @@ def change_profile_picture(new_profile_pic, auth_user_profile):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     src = f'{base_dir}{new_profile_pic.image.url}'
     dst = f'{base_dir}/media/images/{auth_user_profile.user.id}/profile_image/'
+    if not os.path.exists(dst):
+        os.mkdir(dst)
     fresh = shutil.copy(src, dst)
     fresh = os.path.relpath(fresh)
     fresh = fresh[6:]  # ponieważ zmiana arybutu poprzez save sama dodaje /media/ na poczatku, a nie chce 2
@@ -90,3 +92,21 @@ def change_profile_picture(new_profile_pic, auth_user_profile):
     # wszystko związane z tymi path'ami to przez to że zanim zmienie zdjęcię an nowe a atrybucie
     # profile_picture, chce utworzyć nowy instance of Image model, a dopiero potem zmienic wartość
     # atrybutu profile_picture, ponieważ w innym wypadku usunąłby on mi zdjęcie przez django_cleanup
+
+
+def new_comment_html(auth_user_profile, request, text):
+    profile_page_url = f'app/profile/{auth_user_profile.user.id}/'
+    base_url = str(request.build_absolute_uri()).split("app")[0]
+    profile_page_url = base_url + profile_page_url
+    profile_picture_url = auth_user_profile.profile_picture.url
+    author = auth_user_profile.__str__()
+    comment_template_file = open('templates/app/comment.html', 'r')
+    comment_template_html = comment_template_file.read()
+    comment_template_file.close()
+    final = comment_template_html.replace("{% url 'profile' id=comment.author.user.id %}", profile_page_url)
+    final = final.replace("{{ comment.author.profile_picture.url }}", profile_picture_url)
+    final = final.replace("{{ comment.author }}", author)
+    final = final.replace("{{ comment.text }}", text)
+    final = final.replace('{% load static %}', '')
+    final = final.replace('{#', '<!--').replace('#}', '-->')
+    return final

@@ -43,13 +43,12 @@
 #info_block {
     margin-bottom: 40px;
 }
-#author_prof_anchor {
+.author_prof_anchor {
     color: inherit;
 }
-
 #author_prof_img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 10%;
     float: left;
@@ -58,6 +57,7 @@
 #author_name {
     margin: 0;
     font-weight: bold;
+    font-size: 20px;
 }
 #img_published {
     margin: 0;

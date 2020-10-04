@@ -2,37 +2,27 @@
 
 <!--
 data for this template
--author
 -comment
-
 -->
 
-<div class="container" style="margin: 10px; background-color: rgba(134,131,131,0.65);">
-{#     Author info section#}
+<div style="margin: 10px; background-color: rgba(187,181,181,0.65); padding: 8px;">
+    {#     Author info section#}
     <div>
-        <a id="user_prof_anchor" href="{% url 'profile' id=author.user.id %}">
-            <img id="user_prof_img" src="{{ author.profile_picture.url }}" alt="Image not found">
+        <a class="comment-user_profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
+            <img class="comment-user_profile_img" src="{{ comment.author.profile_picture.url }}" alt="Image not found">
         </a>
-        <a href="{% url 'profile' id=author.user.id %}">
-            <p id="user_name">{{ author }}</p>
+        <a class="comment-user_profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
+            <p class="comment-user_name">{{ comment.author }}</p>
         </a>
     </div>
-{#    Comment text section#}
+    {#    Comment text section#}
     <div>
-        <p>{{ comment.0.text }}</p>
+        <p style="margin-bottom: 0;">{{ comment.text }}</p>
     </div>
-{#    comment actions section#}
+    {#    comment actions section#}
     <div>
-{#        like#}
-{#        reply#}
-{#        likes list#}
+    {#        like#}
+    {#        reply#}
+    {#        likes list#}
     </div>
-
 </div>
-
-
-
-
-
-
-

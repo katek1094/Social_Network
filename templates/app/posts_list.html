@@ -1,9 +1,8 @@
 
 
-
-
-
 {% load static %}
+
+<script src="{% static 'js/posts_list.js' %}" defer></script>
 <script>
     let pre_gallery_url = "{% url 'pre_gallery_url' %}";
     let like_url = "{% url 'like' %}";
@@ -12,8 +11,6 @@
         var csrf_token = '{{ csrf_token }}'
     }
 </script>
-<script src="{% static 'js/posts_list.js' %}" defer></script>
-
 
 {% for post_data in posts %}
     {% include 'app/post.html' %}

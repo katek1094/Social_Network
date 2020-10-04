@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from homepage.models import MyUser
 from . models import UserProfile, Post, Image, FriendRequest, Friendship, Like, PreGalleryUrl, Comment
 from .forms import BestForm, NewProfilePictureUploadForm
-from .functions import search_for_users, change_profile_picture
+from .functions import search_for_users, change_profile_picture, new_comment_html
 from urllib import parse
+import re
 
 
 def pre_gallery_url(request):
@@ -34,6 +35,23 @@ def pre_gallery_url(request):
         final = exit_url + '?' + parse.urlencode(context)
 
         return JsonResponse({'success': True, 'url': final})
+
+
+def comment(request):
+    auth_user_profile = UserProfile.objects.get(user=request.user)
+    target_type = request.POST['type']
+    target_id = request.POST['id']
+    text = request.POST.get('text')
+    final_new_comment_html = new_comment_html(auth_user_profile, request, text)
+    if text != '':
+        if target_type == 'post':
+            post = Post.objects.get(id=target_id)
+            Comment.objects.create(post=post, text=text, author=auth_user_profile)
+            return JsonResponse({'success': True, 'new_comment_html': final_new_comment_html})
+        elif target_type == 'image':
+            image = Image.objects.get(id=target_id)
+            Comment.objects.create(image=image, text=text, author=auth_user_profile)
+            return JsonResponse({'success': True, 'new_comment_html': final_new_comment_html})
 
 
 def like(request):
@@ -74,15 +92,7 @@ def friendship_button(request):
     return JsonResponse({'success': True, 'new_action': friendship_status_actions[status]})
 
 
-def comment(request):
-    auth_user_profile = UserProfile.objects.get(user=request.user)
-    post_id = request.POST.get('post_id')
-    post = Post.objects.get(id=post_id)
-    text = request.POST.get('text')
-    if text != '':
-        Comment.objects.create(post=post, text=text, author=auth_user_profile)
 
-    return JsonResponse({'success': True})
 
 
 

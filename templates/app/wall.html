@@ -15,7 +15,8 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-9">
-                    {{ form|crispy }}
+{#                    {{ form|crispy }}#}
+                    {{ form.as_p }}
                 </div>
                 <div class="col-3">
                     <input class="btn btn-dark" type="submit" value="post">
@@ -24,7 +25,7 @@
         </form>
     </div>
 
-    {% include 'app/posts_list.html' with posts=wall_posts %}
+
 
 
 
