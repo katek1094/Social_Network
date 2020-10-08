@@ -4,7 +4,7 @@ Facebook clone
 This a project that copies Facebook, using Django as backend, front-end 100% self-written, without any frameworks, only HTML, CSS, JS and little bit of jQuery
 
 Currently avaible features:
--registering a new account, via e-mail adress
+-registering a new account via e-mail adress
 -adding posts, with or wihout images
 -commenting posts and images
 -searching for users
