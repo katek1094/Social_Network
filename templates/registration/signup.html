@@ -10,20 +10,13 @@
     <div class="container">
         <h1>Social Network</h1>
         <h2>Registration</h2>
-
         <div class="jumbotron" style="width: 500px; background:#efa065;">
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input class='btn btn-outline-info' type="submit" value="register">
             </form>
-
         </div>
-
-
-
-
-
     </div>
 </div>
 

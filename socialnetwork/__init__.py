@@ -4,10 +4,6 @@
 # TODO: messenger
 # TODO: editing posts
 # TODO: new profile images as posts
-# TODO:likes for comments
-# TODO:
 
 # TODO: editing, deleting posts, comments and images
-# TODO: likes to look good
 # TODO: likes list on modal window with this guide https://www.w3schools.com/howto/howto_css_modals.asp, and hover
-

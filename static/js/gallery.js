@@ -1,6 +1,3 @@
-let right = 0;
-let left = 0;
-
 document.onkeydown = checkKey;
 function checkKey(e) {
     if (e.keyCode === 37) {

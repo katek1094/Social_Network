@@ -1,79 +1,61 @@
 {% load static %}
 
-
-
-<div id="post_block-{{ post_data.post.id }}" class="jumbotron post_block">
-    {# USER AND POST INFO SECTION #}
-    <div>
-        <div>
-            <a class="post-author_profile_anchor" href="{% url 'profile' id=post_data.profile.user.id %}">
-                <img class="post-author_profile_img" src="{{ post_data.profile.profile_picture.url }}" alt="Image not found">
-            </a>
-            <a class="post-author_profile_anchor" href="{% url 'profile' id=post_data.profile.user.id %}">
-                <p class="post-author_name">{{ post_data.profile }}</p>
-            </a>
-            <p id="post_published">{{ post_data.published }}</p>
-        </div>
-        <div style="display: inline">
-            <p style="display: inline">new profile picture</p>
-        </div>
-
-
-    </div>
-    {# TEXT SECTION #}
-    <article id="post_text-{{ post_data.post.id }}" class="post_text">{{ post_data.post.text }}</article>
-    {# IMAGES SECTION #}
-    <div>
-        {% for image in post_data.images %}
-            <a class="gallery-link" onclick="gallery_link({{ auth_profile_user.user.id }})"
-               href="{% url 'gallery' image_id=image.id %}">
-                <img id="post_img" src="{{ image.image.url }}" alt="Image not found">
-            </a>
-        {% endfor %}
-    </div>
-    {# BUTTONS AND LIKES SECTION#}
-    <div>
-        <div id="like-button-post-{{ post_data.post.id }}">
-            {% if post_data.like %}
-                <button class='btn btn-primary' id="unlike-post-{{ post_data.post.id }}"
-                        onclick="likeButton('post', {{ post_data.post.id }}, 'unlike')">unlike</button>
-            {% else %}
-                <button class='btn btn-secondary' id="like-post-{{ post_data.post.id }}"
-                        onclick="likeButton('post', {{ post_data.post.id }}, 'like')">like</button>
-            {% endif %}
-        </div>
-        <div id="likes_counter-post-{{ post_data.post.id }}">
-            {% if post_data.likes != 0 %}
-                <p>{{ post_data.likes }} people like this</p>
-            {% endif %}
-        </div>
-    </div>
-    {#    COMMENTS SECTION#}
-    <div id="comments_section-post-{{ post_data.post.id }}">
-        {#    COMMENTS LIST#}
-        <div id="comments_list-post-{{ post_data.post.id }}">
-            {% for comment in post_data.comments%}
-                <div>
-                    {% include 'app/comment.html' %}
+<div class="wall_item">
+    <div class="post" id="post-{{ post_data.post.id }}">
+        <!--{# AUTHOR AND POST INFO SECTION #}-->
+        <div class="info_section">
+            <div class="author_and_published">
+                <a class='profile_anchor' href="{% url 'profile' id=post_data.profile.user.id %}">
+                    <img class="profile_picture"
+                         src="{{ post_data.profile.profile_picture.url }}" alt="Image not found"></a>
+                <div class="name_and_published">
+                    <a class="profile_anchor" href="{% url 'profile' id=post_data.profile.user.id %}">
+                        <p class="author_name">{{ post_data.profile }}</p>
+                    </a>
+                    <p class="published">{{ post_data.published }}</p>
                 </div>
+            </div>
+        </div>
+        <!-- {# TEXT SECTION #}-->
+        <div class="text_section">
+            <article id="text-post-{{ post_data.post.id }}" class="text">{{ post_data.post.text }}</article>
+        </div>
+        <!--{# IMAGES SECTION #}-->
+        <div class="post-images_section">
+            {% for image in post_data.images %}
+                <a class="gallery_link" onclick="gallery_link({{ auth_profile_user.user.id }})"
+                   href="{% url 'gallery' image_id=image.id %}">
+                    <img class="image" src="{{ image.image.url }}" alt="Image not found">
+                </a>
             {% endfor %}
         </div>
-        {#    NEW COMMENT SECTION#}
-        <div class="row" style="width: 100%; margin: 10px">
-            <div class="col-10" style="padding: 0;">
-            <textarea id="new-comment_content-post-{{ post_data.post.id }}" class="autoresizing"
-                      placeholder="Write a comment..."></textarea>
-            </div>
-            <div class="col-2" style="padding: 0">
-                <button id="new-comment-button-post-{{ post_data.post.id }}" onclick="commentButton('post', {{ post_data.post.id }})"
-                >publish</button>
+        <!--{# LIKES SECTION#}-->
+        <div class="likes_section">
+            {% if post_data.like %}
+                <button class='like_button unlike' id="like_button-post-{{ post_data.post.id }}"
+                        onclick="likeButton('post', {{ post_data.post.id }})" type="button">unlike</button>
+            {% else %}
+                <button class='like_button like' id="like_button-post-{{ post_data.post.id }}"
+                        onclick="likeButton('post', {{ post_data.post.id }})" type="button">like</button>
+            {% endif %}
+            <div id="likes_counter_section_post-{{ post_data.post.id }}" class="likes_counter_section">
+                {% if post_data.likes != 0 %}
+                    <p id="likes_counter-post-{{ post_data.post.id }}" class="likes_counter">{{ post_data.likes }} people like this</p>
+                {% endif %}
             </div>
         </div>
+        <!--{# COMMENTS SECTION#}-->
+        <div class="comments_section" id="comments_section-post-{{ post_data.post.id }}">
+            <!--    {# COMMENTS LIST#}-->
+            <div id="comments_list-post-{{ post_data.post.id }}">
+                {% for comment in post_data.comments%}
+                    {% include 'app/comment.html' %}
+                {% endfor %}
+            </div>
+            <!--    {# NEW COMMENT SECTION#}-->
+            {% include 'app/new_comment_section.html' with type='post' id=post_data.post.id %}
+        </div>
     </div>
-
-
-
-
-
-
 </div>
+
+

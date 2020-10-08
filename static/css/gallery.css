@@ -1,50 +1,82 @@
-#main_block {
-    height: 100vh;
+html, body {
+    height: 100%;
+}
+.gallery_block {
+    height: 100%;
     background: black;
     width: 100%;
+    display: flex;
+    align-items: center;
+    /*overflow: hidden;*/
 }
-#image_block {
-    text-align: center;
-    vertical-align: middle;
+.image_block {
+    position: relative;
+    height: 100%;
+    flex-basis: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #image {
     max-height: 100vh;
     max-width: 100vh;
     object-fit: contain;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
 }
-#gallery_exit_button {
+#gallery-exit_button {
     position: absolute;
-    bottom: 90%;
-    left: 50px;
-}
-#left_button {
-    position: absolute;
-    bottom: 50%;
-    left: 50px;
+    top: 4%;
+    left: 3%;
     font-weight: bold;
+    padding: 6px;
+    color: white;
+    background-color: #58595B;
+    border: 2px solid white;
+    border-radius: 10%;
+    font-size: 20px;
 }
-#right_button {
+#gallery-exit_button:hover {
+    color: black;
+    border-color: black;
+    background-color: white;
+}
+#gallery-exit_button:active {
+    border-color: white;
+}
+.gallery_button {
     position: absolute;
     bottom: 50%;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color: black;
+    text-decoration: none;
+    padding: 8px;
+    color: white;
+    border: 2px solid white;
+}
+.gallery_button:hover {
+    background-color: white;
+    color: black;
+}
+.gallery_button:active {
+    border-color: black;
+}
+.gallery_button.right {
     right: 50px;
-    font-weight: bold;
 }
-#info-comment_block {
+.gallery_button.left {
+    left: 50px;
+}
+.info-comment_block {
+    position: relative;
     height: 100%;
-}
-#info-comment_jumbotron {
-    height: 95vh;
-    padding: 14px;
-    margin: 10px;
+    flex-basis: 30%;
+    background-color: #808285;
+    padding: 20px;
+    box-sizing: border-box;
 }
 #info_block {
     margin-bottom: 40px;
-}
-.author_prof_anchor {
-    color: inherit;
 }
 #author_prof_img {
     width: 50px;

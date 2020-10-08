@@ -19,7 +19,7 @@ from homepage import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup', views.signup, name='signup'),
     path('', include('app.urls')),

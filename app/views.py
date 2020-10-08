@@ -88,6 +88,9 @@ def wall(request):
                 for image in images:
                     Image.objects.create(image=image, post=post)
                 return redirect('wall')
+        else:
+            pass
+            #  TODO: do not reload page if form is not valid, display some info about it
     else:
         form = BestForm()
 

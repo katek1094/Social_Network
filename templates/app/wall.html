@@ -1,33 +1,21 @@
 {% extends 'app/base_app.html' %}
-{% load crispy_forms_filters %}
 
 {% block wall_block %}
 
-    <script>
+    <div class="wall_item">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div id="new_post_form-div">
+                {{ form }}
+                <input id='new_post_form-submit' class="sn_btn" type="submit" value="post">
+            </div>
+        </form>
+    </div>
+    {% include 'app/posts_list.html' with posts=wall_posts %}
+
+    <script defer>
         $(document).ready(function(){
             window.scrollTo(0, {{ scrollY }})
         });
     </script>
-
-    <div class="jumbotron" style="padding: 10px">
-        <h4>add new post</h4>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-9">
-{#                    {{ form|crispy }}#}
-                    {{ form.as_p }}
-                </div>
-                <div class="col-3">
-                    <input class="btn btn-dark" type="submit" value="post">
-                </div>
-            </div>
-        </form>
-    </div>
-
-
-
-
-
-
 {% endblock %}

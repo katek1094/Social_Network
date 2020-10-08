@@ -1,0 +1,57 @@
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.options_div {
+    width: 30px;
+    height: 30px;
+    background-image: radial-gradient(circle, white 3px, transparent 4px);
+    background-size: 100% 33.33%;
+}
+.options_div:hover {
+  background-image: radial-gradient(circle, #808285 3px, transparent 4px);
+}
+.options_button {
+  background-color: #808285;
+  border: 1px solid #808285;
+  border-radius: 50%;
+  padding: 0;
+}
+.options_button:hover {
+  background-color: white;
+  border-color: white;
+}
+.options_button:active {
+  border-color: #808285;
+}

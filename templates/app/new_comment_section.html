@@ -1,0 +1,9 @@
+{#DATA FOR THIS TEMPLATE:#}
+{#-TYPE: post, image#}
+{#-ID#}
+<div class="new_comment_section">
+    <textarea id="new-comment_content-{{ type }}-{{ id }}" class="autoresizing new_comment_textarea"
+                  placeholder="Write a comment..."></textarea>
+    <button id="new-comment-button-post-{{ id }}" class="sn_btn"
+            onclick="commentButton('{{ type }}', {{ id }})">publish</button>
+</div>

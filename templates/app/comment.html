@@ -1,28 +1,29 @@
-{% load static %}
-
 <!--
 data for this template
 -comment
 -->
-
-<div style="margin: 10px; background-color: rgba(187,181,181,0.65); padding: 8px;">
+<div class="comment">
     {#     Author info section#}
     <div>
-        <a class="comment-user_profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
-            <img class="comment-user_profile_img" src="{{ comment.author.profile_picture.url }}" alt="Image not found">
-        </a>
-        <a class="comment-user_profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
-            <p class="comment-user_name">{{ comment.author }}</p>
+        <a class="profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
+            <img class="profile_picture" src="{{ comment.author.profile_picture.url }}" alt="Image not found">
         </a>
     </div>
-    {#    Comment text section#}
     <div>
-        <p style="margin-bottom: 0;">{{ comment.text }}</p>
+        <div>
+            <a class="profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
+                <p class="comment-user_name">{{ comment.author }}</p>
+            </a>
+        </div>
+        {#    Comment text section#}
+        <div>
+            <p class="comment_text">{{ comment.text }}</p>
+        </div>
     </div>
     {#    comment actions section#}
     <div>
-    {#        like#}
-    {#        reply#}
-    {#        likes list#}
+        {#        like#}
+        {#        reply#}
+        {#        likes list#}
     </div>
 </div>

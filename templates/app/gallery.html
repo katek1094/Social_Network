@@ -4,110 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <title>social network</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    {#    jquery moje#}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href='{% static "css/gallery.css" %}'>
-    <link rel="stylesheet" type="text/css" href='{% static "css/comments.css" %}'>
-
-    <script src="{% static 'js/my_js.js' %}"></script>
-    <script src="{% static 'js/gallery.js' %}"></script>
-    <script>let pre_gallery_url = "{% url 'pre_gallery_url' %}";
-    let like_url = "{% url 'like' %}";
-    let comment_url = "{% url 'comment' %}";
-    if (typeof csrf_token === 'undefined') {
-        var csrf_token = '{{ csrf_token }}'
-    }
-</script>
-
+    <link rel="stylesheet" type="text/css" href='{% static "css/styles.css" %}'>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> <!-- for favicon.ico bug -->
 </head>
 <body>
-<script>
-    {% if right_image %}
-        right = {{ right_image }}
-    {% endif %}
-    {% if left_image %}
-        left = {{ left_image }}
-    {% endif %}
-</script>
-<div id="main_block" class="row">
-    <div id='image_block' class="col-9">
+<div class="gallery_block">
+    <div class='image_block'>
         <img id="image" src="{{ image.image.url }}" alt='image not found'>
-        <button id="gallery_exit_button" onclick='gallery_exit({{ auth_profile_user.user.id }})'>Back</button>
+        <button type='button' id="gallery-exit_button" onclick='gallery_exit({{ auth_profile_user.user.id }})'>exit</button>
         {% if left_image %}
-            <a id="left_button" class="btn btn-secondary"
-               href="{% url 'gallery' image_id=left_image.id %}">Left</a>
-        {% endif %}
+            <a class="gallery_button left" href="{% url 'gallery' image_id=left_image.id %}">left</a>
+            {% endif %}
         {% if right_image %}
-            <a id='right_button' class="btn btn-secondary"
-               href="{% url 'gallery' image_id=right_image.id %}">Right</a>
-        {% endif %}
+            <a class="gallery_button right" href="{% url 'gallery' image_id=right_image.id %}">right</a>
+            {% endif %}
     </div>
     {#image info and comments#}
-    <div id="info-comment_block" class="col-3">
-        <div id="info-comment_jumbotron" class="jumbotron">
-            {#            IMAGE AND AUTHOR INFO#}
-            <div id="info_block">
-                <a class='author_prof_anchor' id="author_prof_anchor" href="{% url 'profile' id=author.user.id %}">
-                    <img id="author_prof_img" src="{{ author.profile_picture.url }}" alt="Image not found">
-                </a>
-                <a class='author_prof_anchor' href="{% url 'profile' id=author.user.id %}">
-                    <p id="author_name">{{ author }}</p>
-                </a>
-                <p id="img_published">{{ image.published }}</p>
+    <div class="info-comment_block">
+{#      INFO SECTION#}
+        <div id="info_block">
+            <a class='profile_anchor' id="author_prof_anchor" href="{% url 'profile' id=author.user.id %}">
+                <img id="author_prof_img" src="{{ author.profile_picture.url }}" alt="Image not found">
+            </a>
+            <a class='profile_anchor' href="{% url 'profile' id=author.user.id %}">
+                <p id="author_name">{{ author }}</p>
+            </a>
+            <p id="img_published">{{ image.published }}</p>
+        </div>
+{#         BUTTONS AND LIKES SECTION#}
+        <div>
+            <div id="like-button-image-{{ image.id }}">
+                {% if like %}
+                    <button class='like_button unlike' id="like_button-image-{{ image.id }}"
+                            onclick="likeButton('image', {{ image.id }}, 'unlike')">unlike</button>
+                {% else %}
+                    <button class='like_button like' id="like_button-image-{{ image.id }}"
+                            onclick="likeButton('image', {{ image.id }}, 'like')">like</button>
+                {% endif %}
             </div>
-            {# BUTTONS AND LIKES SECTION#}
-            <div>
-                <div id="like-button-image-{{ image.id }}">
-                    {% if like %}
-                        <button class='btn btn-primary' id="unlike-image-{{ image.id }}"
-                                onclick="likeButton('image', {{ image.id }}, 'unlike')">unlike</button>
-                    {% else %}
-                        <button class='btn btn-secondary' id="like-image-{{ image.id }}"
-                                onclick="likeButton('image', {{ image.id }}, 'like')">like</button>
-                    {% endif %}
-                </div>
-                <div id="likes_counter-image-{{ image.id }}">
-                    {% if likes != 0 %}
-                        <p>{{ likes }} people like this</p>
-                    {% endif %}
-                </div>
+            <div id="likes_counter_section_image-{{ image.id }}" class="likes_counter_section">
+                {% if likes != 0 %}
+                    <p id="likes_counter-image-{{ image.id }}" class="likes_counter">{{ likes }} people like this</p>
+                {% endif %}
             </div>
-            {#        COMMENTS SECTION#}
-            <div id="comments_section-image-{{ image.id }}">
-{#            COMMENTS LIST#}
-                <div id="comments_list-image-{{ image.id }}">
-                    {% for comment in comments%}
-                        <div>
-                            {% include 'app/comment.html' %}
-                        </div>
-                    {% endfor %}
-                </div>
-                {#        NEW COMMENTS SECTION#}
-                <div class="row" style="width: 100%; margin: 10px">
-                    <div class="col-10" style="padding: 0;">
-                    <textarea id="new-comment_content-image-{{ image.id }}" class="autoresizing"
-                              placeholder="Write a comment..."></textarea>
+{#            <div id="likes_counter-image-{{ image.id }}">#}
+{#                {% if likes != 0 %}#}
+{#                    <p>{{ likes }} people like this</p>#}
+{#                {% endif %}#}
+{#            </div>#}
+        </div>
+{#                COMMENTS SECTION#}
+        <div id="comments_section-image-{{ image.id }}">
+{#                        COMMENTS LIST#}
+            <div id="comments_list-image-{{ image.id }}">
+                {% for comment in comments%}
+                    <div>
+                        {% include 'app/comment.html' %}
                     </div>
-                    <div class="col-2" style="padding: 0">
-                        <button id="new-comment-button-image-{{ image.id }}" onclick="commentButton('image', {{ image.id }})"
-                        >publish</button>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-
-
-
-
+{#                    NEW COMMENT SECTION#}
+            {% include 'app/new_comment_section.html' with type='image' id=image.id %}
         </div>
     </div>
 </div>
+<script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+<script>
+    {% if right_image %}
+        let right = {{ right_image }};
+    {% endif %}
+    {% if left_image %}
+        let left = {{ left_image }};
+    {% endif %}
+</script>
+<script>let pre_gallery_url = "{% url 'pre_gallery_url' %}";
+let like_url = "{% url 'like' %}";
+let comment_url = "{% url 'comment' %}";
+if (typeof csrf_token === 'undefined') {
+    var csrf_token = '{{ csrf_token }}'
+}
+</script>
+<script src="{% static 'js/my_js.js' %}"></script>
+<script src="{% static 'js/gallery.js' %}"></script>
 </body>
 </html>
-
-
-
-

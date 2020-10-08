@@ -1,54 +1,26 @@
 {% extends 'app/base_app.html' %}
 {% load static %}
-
-
 {% block wall_block %}
+    <div class="wall_item profile_page_section">
+        <a class="gallery-link" onclick="gallery_link({{ auth_profile_user.user.id }})"
+           href="{% url 'gallery' image_id=profile_image_id %}">
+            <img class="profile_picture" src="{{ visited_user.profile_picture.url }}" alt="Image not Found">
+        </a>
+        <p class="name">{{ visited_user.user.first_name }} {{ visited_user.user.last_name }}</p>
+        {% if status != "self" %}
+            <button class="friendship_button sn_btn"
+                    onclick="friendshipButton({{ auth_profile_user.user.id }},{{ visited_user.user.id }})">
+                {{ button_action }}</button>
+        {% endif %}
 
+        {% include 'app/modal.html' %}
+
+    </div>
+    {% include 'app/posts_list.html' with posts=profile_posts %}
     <script>
         $(document).ready(function(){
             window.scrollTo(0, {{ scrollY }})
         });
         let friendship_button_url = '{% url 'friendship_button' %}'
     </script>
-    <script src="{% static 'js/profile_page.js' %}"></script>
-
-    <div id="main_block">
-        <a class="gallery-link" onclick="gallery_link({{ auth_profile_user.user.id }})"
-           href="{% url 'gallery' image_id=profile_image_id %}">
-            <img id="profile_img" src="{{ visited_user.profile_picture.url }}" alt="Image not Found">
-            {#                <img id="post_img" src="{{ image.image.url }}" alt="Image not found">#}
-        </a>
-
-        <h2>{{ visited_user.user.first_name }} {{ visited_user.user.last_name }}</h2>
-        {% if status != "self" %}
-            <button id="friendship-button" class="btn btn-dark"
-                    onclick="friendshipButton({{ auth_profile_user.user.id }},{{ visited_user.user.id }})">
-                {{ button_action }}</button>
-
-
-
-            {#            <form method="POST" action="{% url 'profile' id=profile_user.user.id %}">#}
-            {#                {% csrf_token %}#}
-            {#                <button type="submit" class="btn btn-dark">#}
-            {#                    {% if status == 'friend' %}#}
-            {#                        unfriend#}
-            {#                    {% elif status == "sended_request" %}#}
-            {#                        cancel friend request#}
-            {#                    {% elif status == "received_request" %}#}
-            {#                        accept friend request#}
-            {#                    {% elif status == 'unknown' %}#}
-            {#                        send friend request#}
-            {#                    {% endif %}#}
-            {#                </button>#}
-            {#            </form>#}
-        {% endif %}
-        <br>
-        <br>
-    </div>
-
-    {% include 'app/posts_list.html' with posts=profile_posts %}
-
-
-
-
 {% endblock %}
