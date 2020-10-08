@@ -3,13 +3,13 @@ function checkKey(e) {
     if (e.keyCode === 37) {
         // left arrow
         if (left) {
-            document.getElementById('left_button').click()
+            document.getElementsByClassName('gallery_button left')[0].click()
         }
     }
     else if (e.keyCode === 39) {
         // right arrow
         if (right) {
-            document.getElementById('right_button').click()
+            document.getElementsByClassName('gallery_button right')[0].click()
         }
     }
     else if (e.keyCode === 27) {

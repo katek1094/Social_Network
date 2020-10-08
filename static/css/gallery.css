@@ -75,8 +75,17 @@ html, body {
     padding: 20px;
     box-sizing: border-box;
 }
-#info_block {
-    margin-bottom: 40px;
+.gallery_block .info_section {
+    display: flex;
+    margin-bottom: 10px;
+}
+.gallery_block .author_and_published {
+    display: flex;
+}
+.gallery_block .name_and_published {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 #author_prof_img {
     width: 50px;

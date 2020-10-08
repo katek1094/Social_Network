@@ -23,14 +23,19 @@
     {#image info and comments#}
     <div class="info-comment_block">
 {#      INFO SECTION#}
-        <div id="info_block">
-            <a class='profile_anchor' id="author_prof_anchor" href="{% url 'profile' id=author.user.id %}">
-                <img id="author_prof_img" src="{{ author.profile_picture.url }}" alt="Image not found">
-            </a>
-            <a class='profile_anchor' href="{% url 'profile' id=author.user.id %}">
-                <p id="author_name">{{ author }}</p>
-            </a>
-            <p id="img_published">{{ image.published }}</p>
+        <div class="info_section">
+            <div class="author_and_published">
+                <a class='profile_anchor' id="author_prof_anchor" href="{% url 'profile' id=author.user.id %}">
+                    <img id="author_prof_img" src="{{ author.profile_picture.url }}" alt="Image not found">
+                </a>
+                <div class="name_and_published">
+                    <a class='profile_anchor' href="{% url 'profile' id=author.user.id %}">
+                        <p id="author_name">{{ author }}</p>
+                    </a>
+                    <p id="img_published">{{ image.published }}</p>
+                </div>
+            </div>
+            {% include 'app/options_button.html' %}
         </div>
 {#         BUTTONS AND LIKES SECTION#}
         <div>
@@ -48,11 +53,6 @@
                     <p id="likes_counter-image-{{ image.id }}" class="likes_counter">{{ likes }} people like this</p>
                 {% endif %}
             </div>
-{#            <div id="likes_counter-image-{{ image.id }}">#}
-{#                {% if likes != 0 %}#}
-{#                    <p>{{ likes }} people like this</p>#}
-{#                {% endif %}#}
-{#            </div>#}
         </div>
 {#                COMMENTS SECTION#}
         <div id="comments_section-image-{{ image.id }}">

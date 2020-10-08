@@ -33,18 +33,18 @@
   cursor: pointer;
 }
 
-.options_div {
+.options_inner_div {
     width: 30px;
     height: 30px;
     background-image: radial-gradient(circle, white 3px, transparent 4px);
     background-size: 100% 33.33%;
 }
-.options_div:hover {
+.options_inner_div:hover {
   background-image: radial-gradient(circle, #808285 3px, transparent 4px);
 }
 .options_button {
-  background-color: #808285;
-  border: 1px solid #808285;
+  background-color: transparent;
+  border: 1px solid transparent;
   border-radius: 50%;
   padding: 0;
 }
@@ -54,4 +54,8 @@
 }
 .options_button:active {
   border-color: #808285;
+}
+.options_outer_div {
+  margin-left: auto;
+  align-self: center;
 }
