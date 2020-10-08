@@ -17,8 +17,6 @@ Features that I am currently working on:
 -deleting posts, comments, images
 -editing posts and comment (text)
 
-
-
 Features avaible soon :
 -notifications about likes and comments
 -mobile-friendly front-end (especcialy gallery)
