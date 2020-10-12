@@ -15,7 +15,7 @@
                     <p class="published">{{ post_data.published }}</p>
                 </div>
             </div>
-            {% include 'app/options_button.html' %}
+            {% include 'app/options_button.html' with type='post' id=post_data.post.id %}
         </div>
         <!-- {# TEXT SECTION #}-->
         <div class="text_section">

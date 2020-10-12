@@ -14,8 +14,7 @@ urlpatterns = [
     path('app/ajax/comment', views.comment, name="comment"),
     path('app/ajax/pre_gallery_url', views.pre_gallery_url, name="pre_gallery_url"),
     path('app/ajax/friendship_button/', views.friendship_button, name='friendship_button'),
-
-
+    path('app/ajax/delete/<str:type>/<int:id>', views.delete, name='delete'),
 
 ]
 

@@ -12,9 +12,6 @@
                     onclick="friendshipButton({{ auth_profile_user.user.id }},{{ visited_user.user.id }})">
                 {{ button_action }}</button>
         {% endif %}
-
-        {% include 'app/modal.html' %}
-
     </div>
     {% include 'app/posts_list.html' with posts=profile_posts %}
     <script>

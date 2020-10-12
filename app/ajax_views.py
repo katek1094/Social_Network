@@ -42,7 +42,7 @@ def comment(request):
     target_type = request.POST['type']
     target_id = request.POST['id']
     text = request.POST.get('text')
-    final_new_comment_html = new_comment_html(auth_user_profile, request, text)
+    final_new_comment_html = new_comment_html(auth_user_profile, request, text, target_id)
     if text != '':
         if target_type == 'post':
             post = Post.objects.get(id=target_id)
@@ -92,10 +92,10 @@ def friendship_button(request):
     return JsonResponse({'success': True, 'new_action': friendship_status_actions[status]})
 
 
+def delete(request, type, id):
+    target_models = {'post': Post, 'image': Image, 'comment': Comment}
+    model = target_models[type]
+    target = model.objects.get(id=id)
+    target.delete()
 
-
-
-
-
-
-
+    return JsonResponse({'success': True})

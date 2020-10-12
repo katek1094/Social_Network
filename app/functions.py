@@ -94,7 +94,7 @@ def change_profile_picture(new_profile_pic, auth_user_profile):
     # atrybutu profile_picture, ponieważ w innym wypadku usunąłby on mi zdjęcie przez django_cleanup
 
 
-def new_comment_html(auth_user_profile, request, text):
+def new_comment_html(auth_user_profile, request, text, id):
     profile_page_url = f'app/profile/{auth_user_profile.user.id}/'
     base_url = str(request.build_absolute_uri()).split("app")[0]
     profile_page_url = base_url + profile_page_url
@@ -108,5 +108,15 @@ def new_comment_html(auth_user_profile, request, text):
     final = final.replace("{{ comment.author }}", author)
     final = final.replace("{{ comment.text }}", text)
     final = final.replace('{% load static %}', '')
+
+    options_button_template_file = open('templates/app/options_button.html', 'r')
+    options_button_template_html = options_button_template_file.read()
+    options_button_template_file.close()
+    options_button_template_html = options_button_template_html.replace('{{ type }}', 'comment').replace('{{ id }}', id)
+
+    final = final.replace("{% include 'app/options_button.html' with type='comment' id=comment.id %}",
+                          options_button_template_html)
     final = final.replace('{#', '<!--').replace('#}', '-->')
+
+    # TODO: adding options button after new cooment is added
     return final

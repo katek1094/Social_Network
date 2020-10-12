@@ -8,30 +8,76 @@
   height: 100%; /* Full height */
   overflow: hidden; /* Enable scroll if needed */
   background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+.modal-box {
+  position: relative;
+  background-color: #525050;
+  margin: auto; /* 15% from the top and centered */
+  padding: 10px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  /*width: 50%;*/
+  border-radius: 15px;
+  color: white;
+}
+.modal-header {
+  display: flex;
+  justify-content: center;
+}
+.modal-title {
+  font-size: 30px;
+  margin: 10px;
 }
 /* The Close Button */
-.close {
+#modal-close {
   color: #aaa;
-  float: right;
-  font-size: 28px;
+  font-size: 38px;
   font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 8px;
 }
-
-.close:hover,
-.close:focus {
+#modal-close:hover,
+#modal-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
+.modal-content {
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+}
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+.modal-button {
+  font-size: 22px;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin: 8px;
+}
+.modal-button.cancel {
+  background-color: #525050;
+  border-color: #525050;
+  color: white;
+}
+.modal-button.cancel:hover {
+  background-color: #808285;
+}
+.modal-button.delete {
+  background-color: white;
+  color: #525050;
+}
+
+
+
+
+
 
 .options_inner_div {
     width: 30px;
@@ -58,4 +104,31 @@
 .options_outer_div {
   margin-left: auto;
   align-self: center;
+  position: relative;
+}
+.popover {
+  background-color: #525050;
+  position: absolute;
+  top: 27px;
+  right: 27px;
+  display: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  flex-direction: column;
+  padding: 20px;
+}
+.delete_button {
+  white-space: nowrap;
+  background-color: #525050;
+  color: white;
+  font-size: 20px;
+  outline: none;
+  border: 1px solid white;
+  border-radius: 6px;
+}
+.delete_button:hover {
+  background-color: #808285;
+}
+.delete_button:active {
+  border-color: #808285;
 }

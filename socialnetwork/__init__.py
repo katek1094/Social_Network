@@ -7,3 +7,4 @@
 
 # TODO: editing, deleting posts, comments and images
 # TODO: likes list on modal window with this guide https://www.w3schools.com/howto/howto_css_modals.asp, and hover
+# TODO: messages, after some CRUD actions
