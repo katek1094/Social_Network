@@ -116,7 +116,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -140,3 +140,6 @@ TEMPLATES[0]["OPTIONS"]['context_processors'].append('app.context_processors.aut
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+
+# CONN_MAX_AGE = None

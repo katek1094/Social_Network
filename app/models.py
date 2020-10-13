@@ -18,10 +18,11 @@ class UserProfile(models.Model):
         return f"{self.user.first_name} {self.user.last_name}"
 
     def add_friend(self, friend, symm=True):
-        friendship = Friendship.objects.get_or_create(from_user=self, to_user=friend)
-        if symm:
-            friend.add_friend(self, False)
-        return friendship
+        if friend != self:
+            friendship = Friendship.objects.get_or_create(from_user=self, to_user=friend)
+            if symm:
+                friend.add_friend(self, False)
+            return friendship
 
     def remove_friend(self, friend, symm=True):
         Friendship.objects.filter(from_user=self, to_user=friend).delete()

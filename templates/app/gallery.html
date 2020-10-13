@@ -81,11 +81,13 @@
 <script>let pre_gallery_url = "{% url 'pre_gallery_url' %}";
 let like_url = "{% url 'like' %}";
 let comment_url = "{% url 'comment' %}";
+let delete_url = "{% url 'delete' 'type' 2137 %}";
 if (typeof csrf_token === 'undefined') {
     var csrf_token = '{{ csrf_token }}'
 }
 </script>
 <script src="{% static 'js/my_js.js' %}"></script>
+<script src="{% static 'js/modal.js' %}"></script>
 <script src="{% static 'js/gallery.js' %}"></script>
 </body>
 </html>

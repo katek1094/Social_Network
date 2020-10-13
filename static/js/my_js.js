@@ -1,6 +1,3 @@
-
-
-
 function gallery_link(auth_user_id) {
     let current_url = window.location.href
     let scrollY = parseInt(window.scrollY)
@@ -72,9 +69,7 @@ function likeButton(type, id) {
             if (action === 'unlike') {
                 like_button.innerText = 'like'
             }
-        }
-    });
-}
+        }});}
 
 function commentButton(type, id) {
     // types: post, image
@@ -95,12 +90,9 @@ function commentButton(type, id) {
             let comments_section = document.getElementById(`comments_list-${type}-${id}`);
             comments_section.insertAdjacentHTML('beforeend', response.new_comment_html)
         }
-    });
-    }
-}
+    });}}
 
-
-$(document).ready(function(){ /* ... */
+function autoresizing() {
     $('.autoresizing').on('input', function () {
         let el = this
         let padding = parseInt(getComputedStyle(el).padding.replace('px', ''))
@@ -125,7 +117,8 @@ $(document).ready(function(){ /* ... */
                 }}}
         this.style.height = '1em';
         this.style.height = this.scrollHeight - x - 2 * padding + 'px'
-    });});
+    });}
+
 
 function friendshipButton(auth_profile_user_id, visited_profile_user_id) {
     let button = document.getElementsByClassName('friendship_button')[0]
@@ -143,5 +136,7 @@ function friendshipButton(auth_profile_user_id, visited_profile_user_id) {
         success: function (response) {
             button.innerText = response.new_action
         }
-    });
-}
+    });}
+
+
+$(document).ready(autoresizing())

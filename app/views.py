@@ -3,8 +3,13 @@ from app.ajax_views import *
 
 # Functions
 
+# import time
+# start = time.time()
+# end = time.time()
+# print(end - start)
 
 def post_list_context(posts, auth_user_profile):
+    posts = posts[:30]
     posts_with_context = []
     for p in posts:
         published = f"{p.published.day}-{p.published.month}-{p.published.year} at {p.published.hour}:{p.published.minute}"
@@ -15,7 +20,6 @@ def post_list_context(posts, auth_user_profile):
                 'published': published,
                 'like': Like.objects.filter(target_post=p, user_profile=auth_user_profile),
                 'likes': p.likes,
-                # 'image_quantity': len(Image.objects.filter(post=p)),
                 'comments': Comment.objects.filter(post=p)}
         posts_with_context.append(data)
     return posts_with_context
@@ -45,7 +49,10 @@ def profile_page(request, id):
     button_action = friendship_status_actions[status]
     user_posts = visited_profile.post_set.all().order_by('-published')
     profile_posts_context = post_list_context(user_posts, auth_user_profile)
-    profile_image_id = Image.objects.filter(profile=visited_profile).order_by('-published')[0].id
+    profile_image_id = Image.objects.filter(profile=visited_profile).order_by('-published')
+    if profile_image_id:
+        profile_image_id = profile_image_id[0].id
+    # TODO: serious bug, if default picture, gallery view is not working
 
     return render(request, 'app/profile_page.html',
                   context={'visited_user': visited_profile, 'profile_posts': profile_posts_context,
@@ -95,12 +102,17 @@ def wall(request):
         form = BestForm()
 
     all_posts = Post.objects.all()
-    friends = auth_user_profile.get_friends()
-    posts = Post.objects.none()
+    friends = auth_user_profile.get_friends().iterator()
+
+    posts = []
     for friend in friends:
-        posts = posts.union(all_posts.filter(user_profile=friend))
-    posts = posts.union(all_posts.filter(user_profile=auth_user_profile))
-    posts = posts.order_by('-published')
+        query = all_posts.filter(user_profile=friend)
+        for p in query:
+            posts.append(p)
+    my_posts = (all_posts.filter(user_profile=auth_user_profile))
+    for p in my_posts:
+        posts.append(p)
+    posts.sort(key=lambda x: x.published, reverse=True)
     wall_posts = post_list_context(posts, auth_user_profile)
 
     return render(request, 'app/wall.html',
