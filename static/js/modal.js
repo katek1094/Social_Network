@@ -81,6 +81,10 @@ function displayOptionMenu(el) {
         let delete_button = `<button class="delete_button" onclick="deleteButton(this, '${type}', ${id})">delete this ${type}</button>`
         new_popover.insertAdjacentHTML("afterbegin", delete_button)
     }}
+    window.onclick = function(event) {
+        if (event.target !== document.getElementById('popover')) {
+            closeModal()
+        }}
 
 
 function optionButtonsListeners() {

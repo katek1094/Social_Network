@@ -3,7 +3,7 @@ from django.core import files
 from io import BytesIO
 import requests
 from randomuser import RandomUser
-from app.models import UserProfile, Image, Friendship, Post, Like
+from app.models import UserProfile, Image, Friendship, Post, Like, Comment
 from homepage.models import MyUser
 import random, datetime
 from faker import Faker
@@ -178,4 +178,31 @@ def clear_likes():
 
 
 def comments():
-    pass
+    fake = Faker()
+    profiles = UserProfile.objects.all().iterator()
+    index = 1
+    print('started')
+    for profile in profiles:
+        friends = profile.get_friends().iterator()
+        posts = []
+        print('collecting posts')
+        for friend in friends:
+            posts.extend(friend.post_set.all().iterator())
+        posts.sort(key=my_func)
+        lenght = len(posts)
+        # # slice = int(lenght / 10)
+        # slice = 2
+        posts = posts[:slice]
+        new_comments = []
+        print('creating comments')
+        for post in posts:
+            new_comments.append(Comment(post=post, text=fake.text(), author=profile,
+                                        published=fake.date_time_between(start_date='-10y', end_date='now')))
+        print('saving comments')
+        Comment.objects.bulk_create(new_comments)
+        print(f'-----> {index}/200 <-----')
+        index += 1
+
+
+def ll():
+    comments()
