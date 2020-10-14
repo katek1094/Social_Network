@@ -111,13 +111,17 @@ class Image(models.Model):
         return f'{self.id}'
 
     def like(self, user):
-        if len(self.post.image_set.all()) == 1:
+        if self.profile:
+            Like.objects.create(target_image=self, user_profile=user)
+        elif len(self.post.image_set.all()) == 1:
             Like.objects.create(target_image=self, user_profile=user, target_post=self.post)
         else:
             Like.objects.create(target_image=self, user_profile=user)
 
     def unlike(self, user):
-        if len(self.post.image_set.all()) == 1:
+        if self.profile:
+            Like.objects.get(target_image=self, user_profile=user).delete()
+        elif len(self.post.image_set.all()) == 1:
             Like.objects.get(target_image=self, user_profile=user, target_post=self.post).delete()
         else:
             Like.objects.get(target_image=self, user_profile=user).delete()

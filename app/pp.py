@@ -206,3 +206,9 @@ def comments():
 
 def ll():
     comments()
+
+
+def xd():
+    if 1 > 0:
+        a = 12
+    print(a)

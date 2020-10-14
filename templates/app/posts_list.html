@@ -7,12 +7,13 @@
     let like_url = "{% url 'like' %}";
     let comment_url = "{% url 'comment' %}";
     let delete_url = "{% url 'delete' 'type' 2137 %}";
+    let edit_url = '{% url 'edit' %}';
     if (typeof csrf_token === 'undefined') {
         var csrf_token = '{{ csrf_token }}'
     }
 </script>
 
-<script src="{% static 'js/modal.js' %}"></script>
+
 {% for post_data in posts %}
     {% include 'app/post.html' %}
 {% endfor %}

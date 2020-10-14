@@ -107,12 +107,13 @@ def new_comment_html(auth_user_profile, request, text, id):
     final = final.replace("{{ comment.author.profile_picture.url }}", profile_picture_url)
     final = final.replace("{{ comment.author }}", author)
     final = final.replace("{{ comment.text }}", text)
+    final = final.replace("{{ comment.id }}", str(id))
     final = final.replace('{% load static %}', '')
 
     options_button_template_file = open('templates/app/options_button.html', 'r')
     options_button_template_html = options_button_template_file.read()
     options_button_template_file.close()
-    options_button_template_html = options_button_template_html.replace('{{ type }}', 'comment').replace('{{ id }}', id)
+    options_button_template_html = options_button_template_html.replace('{{ type }}', 'comment').replace('{{ id }}', str(id))
 
     final = final.replace("{% include 'app/options_button.html' with type='comment' id=comment.id %}",
                           options_button_template_html)

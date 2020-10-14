@@ -42,16 +42,18 @@ def comment(request):
     target_type = request.POST['type']
     target_id = request.POST['id']
     text = request.POST.get('text')
-    final_new_comment_html = new_comment_html(auth_user_profile, request, text, target_id)
     if text != '':
+        new_comment = None
         if target_type == 'post':
             post = Post.objects.get(id=target_id)
-            Comment.objects.create(post=post, text=text, author=auth_user_profile)
-            return JsonResponse({'success': True, 'new_comment_html': final_new_comment_html})
+            new_comment = Comment.objects.create(post=post, text=text, author=auth_user_profile)
         elif target_type == 'image':
             image = Image.objects.get(id=target_id)
-            Comment.objects.create(image=image, text=text, author=auth_user_profile)
-            return JsonResponse({'success': True, 'new_comment_html': final_new_comment_html})
+            new_comment = Comment.objects.create(image=image, text=text, author=auth_user_profile)
+
+        final_new_comment_html = new_comment_html(auth_user_profile, request, text, new_comment.id)
+        return JsonResponse({'success': True, 'new_comment_html': final_new_comment_html,
+                             'new_id': new_comment.id})
 
 
 def like(request):
@@ -99,3 +101,18 @@ def delete(request, type, id):
     target.delete()
 
     return JsonResponse({'success': True})
+
+
+def edit(request):
+    target_models = {'post': Post, 'comment': Comment}
+    target_type = target_models[request.POST['type']]
+    target_id = request.POST['id']
+    new_text = request.POST['new_text']
+    instance = target_type.objects.get(id=target_id)
+    instance.text = new_text
+    instance.save()
+
+    return JsonResponse({'success': True})
+
+
+

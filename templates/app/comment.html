@@ -2,7 +2,7 @@
 data for this template
 -comment
 -->
-<div class="comment">
+<div class="comment" id="comment-{{ comment.id }}">
     {#     Author info section#}
     <div>
         <a class="profile_anchor" href="{% url 'profile' id=comment.author.user.id %}">
@@ -17,7 +17,7 @@ data for this template
         </div>
         {#    Comment text section#}
         <div>
-            <p class="comment_text">{{ comment.text }}</p>
+            <p id="text-comment-{{ comment.id }}" class="comment_text">{{ comment.text }}</p>
         </div>
     </div>
     {#    comment actions section#}

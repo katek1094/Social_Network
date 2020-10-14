@@ -75,7 +75,6 @@ function commentButton(type, id) {
     // types: post, image
     let comment_field = document.getElementById(`new-comment_content-${type}-${id}`)
     let text = comment_field.value
-    console.log(text)
     if (text !== '') {
         $.ajax({
         url: comment_url,
@@ -89,19 +88,14 @@ function commentButton(type, id) {
             comment_field.value = ''
             let comments_section = document.getElementById(`comments_list-${type}-${id}`);
             comments_section.insertAdjacentHTML('beforeend', response.new_comment_html)
+            document.getElementById(`options_button-comment-${response.new_id}`).addEventListener('click', displayOptionMenu)
+            // console.log(document.getElementById(`options_button-comment-${response.new_id}`))
         }
-    });}}
+    });}
+}
 
-function autoresizing() {
-    $('.autoresizing').on('input', function () {
-        let el = this
-        let padding = parseInt(getComputedStyle(el).padding.replace('px', ''))
-        let font_size = parseInt(getComputedStyle(el).fontSize.replace('px', ''))
-        // let basic_height = (font_size + (2 * padding)).toString() + 'px'
-        // this.style.height = basic_height
-        // let new_height = this.scrollHeight - (padding * 2)
-        // this.style.height = new_height + 'px';
-        // 8 - 1
+function parameter(font_size) {
+    // 8 - 1
         // 12 - 2
         // 16 - 3
         // 24 - 4
@@ -115,8 +109,19 @@ function autoresizing() {
                 else {
                     if (font_size > 10) {x = 2}
                 }}}
+        return x
+}
+
+
+
+
+function autoresizing() {
+    $('.autoresizing').on('input', function () {
+        let el = this
+        let padding = parseInt(getComputedStyle(el).padding.replace('px', ''))
+        let font_size = parseInt(getComputedStyle(el).fontSize.replace('px', ''))
         this.style.height = '1em';
-        this.style.height = this.scrollHeight - x - 2 * padding + 'px'
+        this.style.height = this.scrollHeight - parameter(font_size) - 2 * padding + 'px'
     });}
 
 

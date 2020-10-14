@@ -1,7 +1,7 @@
 #modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 2; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -69,7 +69,7 @@
 .modal-button.cancel:hover {
   background-color: #808285;
 }
-.modal-button.delete {
+.modal-button.confirm {
   background-color: white;
   color: #525050;
 }
@@ -117,7 +117,7 @@
   flex-direction: column;
   padding: 20px;
 }
-.delete_button {
+.popover_button {
   white-space: nowrap;
   background-color: #525050;
   color: white;
@@ -125,10 +125,20 @@
   outline: none;
   border: 1px solid white;
   border-radius: 6px;
+  margin: 4px;
 }
-.delete_button:hover {
+.popover_button:hover {
   background-color: #808285;
 }
-.delete_button:active {
+.popover_button:active {
   border-color: #808285;
 }
+.edit_textarea {
+  padding: 8px;
+  font-size: 18px;
+  margin: 8px;
+  width: 400px;
+}
+
+
+
