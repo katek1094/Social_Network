@@ -12,7 +12,8 @@ def post_list_context(posts, auth_user_profile):
     posts = posts[:30]
     posts_with_context = []
     for p in posts:
-        published = f"{p.published.day}-{p.published.month}-{p.published.year} at {p.published.hour}:{p.published.minute}"
+        published = f"{p.published.day}-{p.published.month}-{p.published.year} at " \
+                    f"{p.published.hour}:{p.published.minute}"
         profile = UserProfile.objects.get(user=p.user_profile)
         data = {'post': p,
                 'images': Image.objects.filter(post=p),
@@ -37,26 +38,26 @@ def welcome_page(request):
 
 
 def profile_page(request, id):
-    scrollY = request.GET.get('scrollY')
-    if not scrollY:
-        scrollY = 0
+    scroll_y = request.GET.get('scrollY')
+    if not scroll_y:
+        scroll_y = 0
     auth_user_profile = UserProfile.objects.get(user=request.user)
     visited_user = MyUser.objects.get(id=id)
     visited_profile = UserProfile.objects.get(user=visited_user)
     status = auth_user_profile.friend_status_with(visited_profile)
-    friendship_status_actions = {'unknown': 'send friend request', 'friend': 'unfriend', 'sended request': 'cancel friend request',
-                     'received request': 'accept friend request', 'self': 'self'}
+    friendship_status_actions = {'unknown': 'send friend request', 'friend': 'unfriend',
+                                 'sended request': 'cancel friend request',
+                                 'received request': 'accept friend request', 'self': 'self'}
     button_action = friendship_status_actions[status]
     user_posts = visited_profile.post_set.all().order_by('-published')
     profile_posts_context = post_list_context(user_posts, auth_user_profile)
     profile_image_id = Image.objects.filter(profile=visited_profile).order_by('-published')
     if profile_image_id:
         profile_image_id = profile_image_id[0].id
-    # TODO: serious bug, if default picture, gallery view is not working
 
     return render(request, 'app/profile_page.html',
                   context={'visited_user': visited_profile, 'profile_posts': profile_posts_context,
-                           'status': status, 'scrollY': scrollY, 'button_action': button_action,
+                           'status': status, 'scrollY': scroll_y, 'button_action': button_action,
                            'profile_image_id': profile_image_id})
 
 
@@ -80,9 +81,9 @@ def settings(request):
 
 
 def wall(request):
-    scrollY = request.GET.get('scrollY')
-    if not scrollY:
-        scrollY = 0
+    scroll_y = request.GET.get('scrollY')
+    if not scroll_y:
+        scroll_y = 0
     auth_user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
         form = BestForm(request.POST, request.FILES)
@@ -116,7 +117,7 @@ def wall(request):
     wall_posts = post_list_context(posts, auth_user_profile)
 
     return render(request, 'app/wall.html',
-                  {'form': form, 'wall_posts': wall_posts, 'scrollY': scrollY})
+                  {'form': form, 'wall_posts': wall_posts, 'scrollY': scroll_y})
 
 
 def search(request):
@@ -144,11 +145,11 @@ def friend_requests(request):
         fr = FriendRequest.objects.get(receiver=auth_user_profile, sender=sender)
         fr.accept()
     auth_user_profile = UserProfile.objects.get(user=request.user)
-    friend_requests = FriendRequest.objects.filter(receiver=auth_user_profile)
-    if not friend_requests:
+    friend_requests_objects = FriendRequest.objects.filter(receiver=auth_user_profile)
+    if not friend_requests_objects:
         return redirect('welcome_page')
 
-    return render(request, 'app/friend_requests.html', {'friend_requests': friend_requests})
+    return render(request, 'app/friend_requests.html', {'friend_requests': friend_requests_objects})
 
 
 def gallery(request, image_id):
@@ -163,12 +164,14 @@ def gallery(request, image_id):
         author = image.profile
         images = Image.objects.filter(profile=author)
     else:
+        author = None
+        images = None
         print('ERROR IN A GALLERY VIEW, SOMETHING WRONG WITH IMAGE INSTANCE ATTRIBUTES')
 
     auth_user_profile = UserProfile.objects.get(user=request.user)
     image_list = list(images.values_list('id', flat=True))
     current_image = image_list.index(image_id)
-    like = Like.objects.filter(target_image=image_id, user_profile=auth_user_profile)
+    is_liked = Like.objects.filter(target_image=image_id, user_profile=auth_user_profile)
     likes = len(Like.objects.filter(target_image=image_id))
     comments = Comment.objects.filter(image=image)
 
@@ -185,4 +188,4 @@ def gallery(request, image_id):
 
     return render(request, 'app/gallery.html', {'author': author, 'image': image,
                                                 'right_image': right_image, 'left_image': left_image,
-                                                'like': like, 'likes': likes, 'comments': comments})
+                                                'like': is_liked, 'likes': likes, 'comments': comments})

@@ -119,5 +119,4 @@ def new_comment_html(auth_user_profile, request, text, id):
                           options_button_template_html)
     final = final.replace('{#', '<!--').replace('#}', '-->')
 
-    # TODO: adding options button after new cooment is added
     return final

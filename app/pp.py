@@ -209,6 +209,7 @@ def ll():
 
 
 def xd():
-    if 1 > 0:
-        a = 12
-    print(a)
+    print(UserProfile.objects.get(user=23).friends)
+    print('elo')
+
+

@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> <!-- for favicon.ico bug -->
 </head>
 <body>
+
 <div class="gallery_block">
     <div class='image_block'>
         <img id="image" src="{{ image.image.url }}" alt='image not found'>
@@ -35,7 +36,7 @@
                     <p id="img_published">{{ image.published }}</p>
                 </div>
             </div>
-            {% include 'app/options_button.html' with type='image' id=image.id %}
+            {% include 'app/snippets/options_button.html' with type='image' id=image.id %}
         </div>
 {#         BUTTONS AND LIKES SECTION#}
         <div>
@@ -60,12 +61,12 @@
             <div id="comments_list-image-{{ image.id }}">
                 {% for comment in comments%}
                     <div>
-                        {% include 'app/comment.html' %}
+                        {% include 'app/snippets/comment.html' %}
                     </div>
                 {% endfor %}
             </div>
 {#                    NEW COMMENT SECTION#}
-            {% include 'app/new_comment_section.html' with type='image' id=image.id %}
+            {% include 'app/snippets/new_comment_section.html' with type='image' id=image.id %}
         </div>
     </div>
 </div>
@@ -78,14 +79,15 @@
         let left = {{ left_image }};
     {% endif %}
 </script>
-<script>let pre_gallery_url = "{% url 'pre_gallery_url' %}";
-let like_url = "{% url 'like' %}";
-let comment_url = "{% url 'comment' %}";
-let delete_url = "{% url 'delete' 'type' 2137 %}";
-let edit_url = {% url 'edit' %};
-if (typeof csrf_token === 'undefined') {
-    var csrf_token = '{{ csrf_token }}'
-}
+<script>
+    let pre_gallery_url = "{% url 'pre_gallery_url' %}";
+    let like_url = "{% url 'like' %}";
+    let comment_url = "{% url 'comment' %}";
+    let delete_url = "{% url 'delete' 'type' 2137 %}";
+    let edit_url = "{% url 'edit' %}";
+    if (typeof csrf_token === 'undefined') {
+        var csrf_token = '{{ csrf_token }}'
+    }
 </script>
 <script src="{% static 'js/my_js.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>

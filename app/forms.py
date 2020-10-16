@@ -15,6 +15,7 @@ class NewProfilePictureUploadForm(forms.Form):
     image = forms.ImageField(widget=forms.ClearableFileInput(), label='')
 
 
-
+class CityCountryForm(forms.Form):
+    pass
 
 
