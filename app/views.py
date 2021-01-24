@@ -25,6 +25,7 @@ def post_list_context(posts, auth_user_profile):
         posts_with_context.append(data)
     return posts_with_context
 
+
 # Views
 
 

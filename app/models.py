@@ -167,6 +167,3 @@ class PreGalleryUrl(models.Model):
     url = models.URLField()
     scrollY = models.IntegerField(default=0)
     user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, primary_key=True)
-
-
-

@@ -8,7 +8,9 @@ function getCookie(name) {
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
-            }}}
+            }
+        }
+    }
     return cookieValue;
 }
 
@@ -24,12 +26,16 @@ function delete_something(type, id) {
             id: id,
         },
         dataType: 'json',
-        beforeSend: xhr => {xhr.setRequestHeader("X-CSRFToken", csrftoken);},
+        beforeSend: xhr => {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
         success: function (response) {
-            if (type === 'comment') {document.getElementById(`${type}-${id}`).remove()}
-            else if (type === 'post') {document.getElementById(`${type}-${id}`).parentNode.remove()}
-            else if (type === 'image') {
-            //    TODO: do something after deleting a image
+            if (type === 'comment') {
+                document.getElementById(`${type}-${id}`).remove()
+            } else if (type === 'post') {
+                document.getElementById(`${type}-${id}`).parentNode.remove()
+            } else if (type === 'image') {
+                //    TODO: do something after deleting a image
             }
         }
     });
@@ -68,14 +74,15 @@ function openModal(type, where, content, title) {
     modal.style.setProperty('display', 'flex')
     document.body.style.overflow = 'hidden'
     document.getElementById('modal-close').onclick = closeModal
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target === document.getElementById('modal')) {
             closeModal()
-        }}
+        }
+    }
 }
 
 
-function closeModal () {
+function closeModal() {
     document.getElementById('modal').remove()
     document.body.style.overflow = 'initial'
     document.getElementsByClassName('popover')[0].remove()
@@ -120,12 +127,17 @@ function editButton(el, type, id) {
 }
 
 function displayOptionMenu(el) {
-    let data = el.target.id.split('-'); let type = data[1]; let id = data[2]
+    let data = el.target.id.split('-');
+    let type = data[1];
+    let id = data[2]
     let popover = document.getElementById(`popover-${type}-${id}`)
-    if (popover) {popover.remove()}
-    else {
+    if (popover) {
+        popover.remove()
+    } else {
         let any_popover = document.getElementsByClassName('popover')[0]
-            if (any_popover) {any_popover.remove()}
+        if (any_popover) {
+            any_popover.remove()
+        }
         el.target.parentNode.parentNode.insertAdjacentHTML('beforeend', `<div id="popover-${type}-${id}" class='popover'></div>`)
         let new_popover = document.getElementById(`popover-${type}-${id}`)
         new_popover.style.setProperty('display', 'flex')
@@ -135,21 +147,26 @@ function displayOptionMenu(el) {
             let edit_button = `<button class="popover_button" onclick="editButton(this, '${type}', ${id})">edit this ${type}</button>`
             new_popover.insertAdjacentHTML("beforeend", edit_button)
         }
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             let popover = document.getElementById(`popover-${type}-${id}`)
             if ((event.target !== popover) && (event.target !== document.getElementById(`options_button-${type}-${id}`))) {
-                if (popover) {popover.remove()}
-            }}
-        }}
+                if (popover) {
+                    popover.remove()
+                }
+            }
+        }
+    }
+}
 
 
 function optionButtonsListeners() {
     let options_buttons = document.getElementsByClassName('options_button')
     for (let i = 0; i < options_buttons.length; i++) {
         options_buttons[i].addEventListener('click', displayOptionMenu)
-    }}
+    }
+}
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     optionButtonsListeners()
 })

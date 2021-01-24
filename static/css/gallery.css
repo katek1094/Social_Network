@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
 }
+
 .gallery_block {
     height: 100%;
     background: black;
@@ -9,6 +10,7 @@ html, body {
     align-items: center;
     /*overflow: hidden;*/
 }
+
 .image_block {
     position: relative;
     height: 100%;
@@ -17,11 +19,13 @@ html, body {
     align-items: center;
     justify-content: center;
 }
+
 #image {
     max-height: 100vh;
     max-width: 100vh;
     object-fit: contain;
 }
+
 #gallery-exit_button {
     position: absolute;
     top: 4%;
@@ -34,14 +38,17 @@ html, body {
     border-radius: 10%;
     font-size: 20px;
 }
+
 #gallery-exit_button:hover {
     color: black;
     border-color: black;
     background-color: white;
 }
+
 #gallery-exit_button:active {
     border-color: white;
 }
+
 .gallery_button {
     position: absolute;
     bottom: 50%;
@@ -54,19 +61,24 @@ html, body {
     color: white;
     border: 2px solid white;
 }
+
 .gallery_button:hover {
     background-color: white;
     color: black;
 }
+
 .gallery_button:active {
     border-color: black;
 }
+
 .gallery_button.right {
     right: 50px;
 }
+
 .gallery_button.left {
     left: 50px;
 }
+
 .info-comment_block {
     position: relative;
     height: 100%;
@@ -75,18 +87,22 @@ html, body {
     padding: 20px;
     box-sizing: border-box;
 }
+
 .gallery_block .info_section {
     display: flex;
     margin-bottom: 10px;
 }
+
 .gallery_block .author_and_published {
     display: flex;
 }
+
 .gallery_block .name_and_published {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 }
+
 #author_prof_img {
     width: 50px;
     height: 50px;
@@ -95,11 +111,13 @@ html, body {
     float: left;
     margin-right: 6px;
 }
+
 #author_name {
     margin: 0;
     font-weight: bold;
     font-size: 20px;
 }
+
 #img_published {
     margin: 0;
     font-size: 12px;

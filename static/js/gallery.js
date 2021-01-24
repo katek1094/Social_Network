@@ -1,18 +1,17 @@
 document.onkeydown = checkKey;
+
 function checkKey(e) {
     if (e.keyCode === 37) {
         // left arrow
         if (left) {
             document.getElementsByClassName('gallery_button left')[0].click()
         }
-    }
-    else if (e.keyCode === 39) {
+    } else if (e.keyCode === 39) {
         // right arrow
         if (right) {
             document.getElementsByClassName('gallery_button right')[0].click()
         }
-    }
-    else if (e.keyCode === 27) {
+    } else if (e.keyCode === 27) {
         // escape
         document.getElementById('gallery_exit_button').click()
     }

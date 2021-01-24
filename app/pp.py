@@ -120,8 +120,6 @@ def clear_fotos():
         index += 1
 
 
-
-
 def dates():
     fake = Faker()
     posts = Post.objects.all()
@@ -211,5 +209,3 @@ def ll():
 def xd():
     print(UserProfile.objects.get(user=23).friends)
     print('elo')
-
-

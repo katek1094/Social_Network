@@ -5,7 +5,6 @@ import shutil, os
 # this function takes people as an argument (in format showed below) and a search phrase
 # that was in the search form field
 def search_for_users(people, search):
-
     results = []
 
     # pobieramy dane od użytkownika
@@ -84,7 +83,7 @@ def change_profile_picture(new_profile_pic, auth_user_profile):
     fresh = fresh[6:]  # ponieważ zmiana arybutu poprzez save sama dodaje /media/ na poczatku, a nie chce 2
     auth_user_profile.profile_picture = fresh
     auth_user_profile.save()
-    
+
     # ciezko powiedziec co sie tu dzieje: chcę aby stare zdjęcia profilowe nadal zapisywały się w folderze
     # profile_images, do któ©ego zapisują się wszystko image z modelu Image, do tego za keżdym razem gdy
     # zmieniane jest profilowe, jest ono zpisywane w folderze profile_image, na potrzeby atrybutu
@@ -113,7 +112,8 @@ def new_comment_html(auth_user_profile, request, text, id):
     options_button_template_file = open('templates/app/options_button.html', 'r')
     options_button_template_html = options_button_template_file.read()
     options_button_template_file.close()
-    options_button_template_html = options_button_template_html.replace('{{ type }}', 'comment').replace('{{ id }}', str(id))
+    options_button_template_html = options_button_template_html.replace('{{ type }}', 'comment').replace('{{ id }}',
+                                                                                                         str(id))
 
     final = final.replace("{% include 'app/options_button.html' with type='comment' id=comment.id %}",
                           options_button_template_html)

@@ -32,11 +32,11 @@ function likesCounter(action, type, id) {
                 tab[0] = String(Number(tab[0]) - 1)
                 text = tab.join(' ')
                 paragraph.innerHTML = text
-            }
-            else {
+            } else {
                 paragraph.remove()
-            }}}
-    else {
+            }
+        }
+    } else {
         document.getElementById(`likes_counter_section_${type}-${id}`).innerHTML = `<p id='likes_counter-${type}-${id}' class="likes_counter">1 people like this</p>`
     }
 }
@@ -54,10 +54,12 @@ function likeButton(type, id) {
     $.ajax({
         url: like_url,
         type: 'POST',
-        data: {target_id: id,
+        data: {
+            target_id: id,
             csrfmiddlewaretoken: csrf_token,
             action: action,
-            target_type: type},
+            target_type: type
+        },
         dataType: 'json',
         success: function () {
             like_button.classList.toggle('like')
@@ -69,7 +71,9 @@ function likeButton(type, id) {
             if (action === 'unlike') {
                 like_button.innerText = 'like'
             }
-        }});}
+        }
+    });
+}
 
 function commentButton(type, id) {
     // types: post, image
@@ -77,42 +81,50 @@ function commentButton(type, id) {
     let text = comment_field.value
     if (text !== '') {
         $.ajax({
-        url: comment_url,
-        type: 'POST',
-        data: {type: type,
-            id: id,
-            text: text,
-            csrfmiddlewaretoken: csrf_token},
-        dataType: 'json',
-        success: function (response) {
-            comment_field.value = ''
-            let comments_section = document.getElementById(`comments_list-${type}-${id}`);
-            comments_section.insertAdjacentHTML('beforeend', response.new_comment_html)
-            document.getElementById(`options_button-comment-${response.new_id}`).addEventListener('click', displayOptionMenu)
-            // console.log(document.getElementById(`options_button-comment-${response.new_id}`))
-        }
-    });}
+            url: comment_url,
+            type: 'POST',
+            data: {
+                type: type,
+                id: id,
+                text: text,
+                csrfmiddlewaretoken: csrf_token
+            },
+            dataType: 'json',
+            success: function (response) {
+                comment_field.value = ''
+                let comments_section = document.getElementById(`comments_list-${type}-${id}`);
+                comments_section.insertAdjacentHTML('beforeend', response.new_comment_html)
+                document.getElementById(`options_button-comment-${response.new_id}`).addEventListener('click', displayOptionMenu)
+                // console.log(document.getElementById(`options_button-comment-${response.new_id}`))
+            }
+        });
+    }
 }
 
 function parameter(font_size) {
     // 8 - 1
-        // 12 - 2
-        // 16 - 3
-        // 24 - 4
-        // 32 - 5
-        let x = 1
-        if (font_size > 28) {x = 5}
-        else {
-            if (font_size > 20) {x = 4}
-            else {
-                if (font_size > 14) {x = 3}
-                else {
-                    if (font_size > 10) {x = 2}
-                }}}
-        return x
+    // 12 - 2
+    // 16 - 3
+    // 24 - 4
+    // 32 - 5
+    let x = 1
+    if (font_size > 28) {
+        x = 5
+    } else {
+        if (font_size > 20) {
+            x = 4
+        } else {
+            if (font_size > 14) {
+                x = 3
+            } else {
+                if (font_size > 10) {
+                    x = 2
+                }
+            }
+        }
+    }
+    return x
 }
-
-
 
 
 function autoresizing() {
@@ -122,7 +134,8 @@ function autoresizing() {
         let font_size = parseInt(getComputedStyle(el).fontSize.replace('px', ''))
         this.style.height = '1em';
         this.style.height = this.scrollHeight - parameter(font_size) - 2 * padding + 'px'
-    });}
+    });
+}
 
 
 function friendshipButton(auth_profile_user_id, visited_profile_user_id) {
@@ -141,7 +154,8 @@ function friendshipButton(auth_profile_user_id, visited_profile_user_id) {
         success: function (response) {
             button.innerText = response.new_action
         }
-    });}
+    });
+}
 
 
 $(document).ready(autoresizing())

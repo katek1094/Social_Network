@@ -18,12 +18,3 @@ urlpatterns = [
     path('app/ajax/edit', views.edit, name='edit'),
 
 ]
-
-
-
-
-
-
-
-
-

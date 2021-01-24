@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from homepage.models import MyUser
-from . models import UserProfile, Post, Image, FriendRequest, Friendship, Like, PreGalleryUrl, Comment
+from .models import UserProfile, Post, Image, FriendRequest, Friendship, Like, PreGalleryUrl, Comment
 from .forms import BestForm, NewProfilePictureUploadForm
 from .functions import search_for_users, change_profile_picture, new_comment_html
 from urllib import parse
@@ -113,6 +113,3 @@ def edit(request):
     instance.save()
 
     return JsonResponse({'success': True})
-
-
-
